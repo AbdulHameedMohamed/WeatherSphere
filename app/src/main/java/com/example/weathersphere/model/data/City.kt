@@ -1,0 +1,15 @@
+package com.example.weathersphere.model.data
+
+import com.google.gson.annotations.SerializedName
+
+data class City(
+    @SerializedName("coord")
+    val coordinates: Coord,
+    val country: String,
+    val id: Int,
+    val name: String,
+    val population: Int,
+    val timezone: Int,
+    val sunrise: Int,
+    val sunset: Int
+)
