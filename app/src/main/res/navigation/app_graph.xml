@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/mapFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.weathersphere.view.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.weathersphere.view.map.MapFragment"
+        android:label="MapFragment" />
 </navigation>

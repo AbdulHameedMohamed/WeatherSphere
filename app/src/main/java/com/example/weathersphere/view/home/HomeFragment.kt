@@ -2,6 +2,7 @@ package com.example.weathersphere.view.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +10,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.weathersphere.R
+import com.example.weathersphere.databinding.DialogLocationBinding
 import com.example.weathersphere.databinding.FragmentHomeBinding
 import com.example.weathersphere.model.WeatherRepository
 import com.example.weathersphere.model.WeatherResult
@@ -25,14 +28,10 @@ import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.example.weathersphere.viewmodel.HomeViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
-import kotlin.coroutines.resume
 
 class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private lateinit var binding: FragmentHomeBinding
@@ -107,7 +106,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated: ")
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        requestLocationPermission()
+        showChooseLocationDialog()
     }
 
     private fun requestLocationPermission() {
@@ -154,5 +153,34 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+
+    private fun showChooseLocationDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        val dialogBinding: DialogLocationBinding = DialogLocationBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+        dialogBinding.btnSave.setOnClickListener {
+            val selectedOptionId = dialogBinding.rgLocation.checkedRadioButtonId
+            when (selectedOptionId) {
+                R.id.radio_gps -> {
+                    requestLocationPermission()
+                }
+                R.id.radio_map -> {
+                    navigationToMapFragment()
+                }
+            }
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun navigationToMapFragment() {
+
     }
 }
