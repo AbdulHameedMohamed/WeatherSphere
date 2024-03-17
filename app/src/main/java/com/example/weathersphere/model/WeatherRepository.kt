@@ -16,17 +16,13 @@ class WeatherRepository private constructor(
     private val remoteDataSource: WeatherRemoteDataSource,
     private val localDataSource: WeatherLocalDataSource
 ) {
-
-    private val _weatherFlow =
-        MutableStateFlow<WeatherResult<ForecastResponse>>(WeatherResult.Loading)
-    val weatherFlow: StateFlow<WeatherResult<ForecastResponse>> = _weatherFlow
-
-    suspend fun getWeatherData() {
+    fun getWeatherData() = flow {
         localDataSource.getWeather().catch {
             Log.d(TAG, "getWeatherData: Fail" + it.message)
-            _weatherFlow.value = WeatherResult.Error(it)
+
+            emit(WeatherResult.Error(it))
         }.collectLatest {
-            _weatherFlow.value = WeatherResult.Success(it)
+            emit(WeatherResult.Success(it))
         }
     }
 

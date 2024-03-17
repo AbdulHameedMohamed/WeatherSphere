@@ -7,20 +7,27 @@ import androidx.lifecycle.viewModelScope
 import com.example.weathersphere.model.WeatherRepository
 import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.ForecastResponse
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 private const val TAG = "HomeViewModel"
 class HomeViewModel(
     private val repository: WeatherRepository
 ): ViewModel() {
-    val weather: StateFlow<WeatherResult<ForecastResponse>>
-        get() = repository.weatherFlow
-
+    private val _weatherFlow = MutableStateFlow<WeatherResult<ForecastResponse>>(WeatherResult.Loading)
+    val weatherFlow: StateFlow<WeatherResult<ForecastResponse>> = _weatherFlow.asStateFlow()
     init {
         viewModelScope.launch {
             Log.d(TAG, "initViewModel: ")
-            repository.getWeatherData()
+            repository.getWeatherData().catch {
+                _weatherFlow.value = WeatherResult.Error(it)
+            }.collectLatest { result->
+                _weatherFlow.value= result
+            }
         }
     }
 

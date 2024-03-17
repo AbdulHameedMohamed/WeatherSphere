@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="3dp"
+    android:backgroundTint="@color/second_color_yellow"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/tv_day_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunday"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="15dp"
+            app:layout_constraintTop_toTopOf="@id/iv_icon_days"
+            app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"/>
+
+        <ImageView
+            android:id="@+id/iv_icon_days"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:src="@drawable/sun"
+            app:layout_constraintEnd_toStartOf="@+id/tv_status_days"
+            app:layout_constraintHorizontal_bias="0.42"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_status_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunny Day"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_days"
+            app:layout_constraintTop_toTopOf="@id/iv_icon_days"
+            app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"
+            />
+
+        <TextView
+            android:id="@+id/tv_degree_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23/13°c"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_icon_days"
+            app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"
+            android:layout_marginEnd="10dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

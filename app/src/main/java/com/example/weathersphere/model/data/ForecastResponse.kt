@@ -8,8 +8,8 @@ import androidx.room.TypeConverters
 import com.example.weathersphere.model.local.Converters
 import com.google.gson.annotations.SerializedName
 
-@TypeConverters(Converters::class)
 @Entity(tableName = "weather")
+@TypeConverters(Converters::class)
 data class ForecastResponse(
     @PrimaryKey
     val id: Int = 0,
