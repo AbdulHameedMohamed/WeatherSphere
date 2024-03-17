@@ -1,15 +1,20 @@
 package com.example.weathersphere.view.home
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.weathersphere.R
 import com.example.weathersphere.databinding.FragmentHomeBinding
 import com.example.weathersphere.model.WeatherRepository
 import com.example.weathersphere.model.WeatherResult
@@ -18,16 +23,26 @@ import com.example.weathersphere.model.local.WeatherLocalDataSource
 import com.example.weathersphere.model.remote.RetrofitClient
 import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.example.weathersphere.viewmodel.HomeViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.PermissionRequest
+import kotlin.coroutines.resume
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var daysAdapter: DaysAdapter
     private lateinit var hoursAdapter: HoursAdapter
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 123
         private const val TAG = "HomeFragment"
     }
 
@@ -37,11 +52,9 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        setupViewModel()
-
         setupRecyclerViews()
 
-        viewModel.getWeather(44.34, 10.99)
+        setupViewModel()
 
         observeWeather()
 
@@ -67,26 +80,79 @@ class HomeFragment : Fragment() {
     private fun observeWeather() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.weatherFlow.collectLatest { status ->
-                    when (status) {
-                        is WeatherResult.Loading -> {
+                viewModel.weatherFlow
+                    .collectLatest { status ->
+                        when (status) {
+                            is WeatherResult.Loading -> {
 
-                        }
+                            }
 
-                        is WeatherResult.Success -> {
+                            is WeatherResult.Success -> {
+                                daysAdapter.submitList(status.data.forecasts)
+                                hoursAdapter.submitList(status.data.forecasts)
 
-                            daysAdapter.submitList(status.data.forecasts)
-                            hoursAdapter.submitList(status.data.forecasts)
+                                Log.d(TAG, "onCreateView: Success ${status.data}")
+                            }
 
-                            Log.d(TAG, "onCreateView: Success ${status.data}")
-                        }
-
-                        is WeatherResult.Error -> {
-                            Log.e(TAG, "onCreateView: Error ${status.exception}")
+                            is WeatherResult.Error -> {
+                                Log.e(TAG, "onCreateView: Error ${status.exception}")
+                            }
                         }
                     }
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated: ")
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        requestLocationPermission()
+    }
+
+    private fun requestLocationPermission() {
+        if (EasyPermissions.hasPermissions(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            fetchLocationAndWeather()
+        } else {
+            EasyPermissions.requestPermissions(
+                PermissionRequest.Builder(this, LOCATION_PERMISSION_REQUEST_CODE, Manifest.permission.ACCESS_FINE_LOCATION)
+                    .setRationale(getString(R.string.location_permission_rationale))
+                    .build()
+            )
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchLocationAndWeather() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                location?.let {
+                    val latitude = it.latitude
+                    val longitude = it.longitude
+                    viewModel.getWeather(latitude, longitude)
                 }
             }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            fetchLocationAndWeather()
+        }
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 }

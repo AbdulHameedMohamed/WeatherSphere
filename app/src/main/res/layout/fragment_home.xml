@@ -368,6 +368,7 @@
                 android:id="@+id/rv_days"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBaseline_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

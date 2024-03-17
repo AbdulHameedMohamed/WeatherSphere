@@ -7,6 +7,7 @@ import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
@@ -16,14 +17,17 @@ class WeatherRepository private constructor(
     private val remoteDataSource: WeatherRemoteDataSource,
     private val localDataSource: WeatherLocalDataSource
 ) {
-    fun getWeatherData() = flow {
-        localDataSource.getWeather().catch {
-            Log.d(TAG, "getWeatherData: Fail" + it.message)
+    private val _weatherFlow =
+        MutableStateFlow<WeatherResult<ForecastResponse>>(WeatherResult.Loading)
+    val weatherFlow: StateFlow<WeatherResult<ForecastResponse>> = _weatherFlow.asStateFlow()
+    suspend fun getWeatherData() {
+            localDataSource.getWeather().catch {
+                Log.d(TAG, "getWeatherData: Fail" + it.message)
 
-            emit(WeatherResult.Error(it))
-        }.collectLatest {
-            emit(WeatherResult.Success(it))
-        }
+                _weatherFlow.value = WeatherResult.Error(it)
+            }.collectLatest {
+                _weatherFlow.value = WeatherResult.Success(it)
+            }
     }
 
     suspend fun refreshWeather(lat: String, lon: String) {
