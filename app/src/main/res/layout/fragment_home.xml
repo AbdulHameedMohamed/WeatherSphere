@@ -374,7 +374,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_hours"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_days" />
+                tools:listitem="@layout/item_daily" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

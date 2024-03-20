@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.weathersphere.model.WeatherRepository
 import com.example.weathersphere.model.WeatherResult
+import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherResponse
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,9 +33,15 @@ class HomeViewModel(
         _selectedLocation.value = location
     }
 
-    fun getWeather(lat: Double, long: Double) = viewModelScope.launch {
-        Log.d(TAG, "getWeather: $lat")
-        repository.refreshWeather(lat, long)
+    fun getWeather(latLng: LatLng) = viewModelScope.launch {
+        Log.d(TAG, "getWeather: ${latLng.latitude}")
+        repository.refreshWeather(latLng)
+    }
+
+    fun addPlaceToFavourite(place: Place) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addPlaceToFavourite(place)
+        }
     }
 
     class Factory(private val repository: WeatherRepository) : ViewModelProvider.Factory {

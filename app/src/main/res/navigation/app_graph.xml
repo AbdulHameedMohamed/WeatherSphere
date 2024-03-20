@@ -10,6 +10,13 @@
         android:name="com.example.weathersphere.view.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_mapFragment"
+            app:destination="@id/mapFragment">
+            <argument
+                android:name="type"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -18,6 +25,22 @@
         <action
             android:id="@+id/action_mapFragment_to_homeFragment"
             app:destination="@id/homeFragment">
+        </action>
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.example.weathersphere.view.favourite.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_mapFragment"
+            app:destination="@id/mapFragment">
+            <argument
+                android:name="type"
+                app:argType="string" />
         </action>
     </fragment>
 </navigation>

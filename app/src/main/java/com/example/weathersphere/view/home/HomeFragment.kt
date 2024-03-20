@@ -29,6 +29,7 @@ import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.example.weathersphere.viewmodel.HomeViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.EasyPermissions
@@ -58,7 +59,8 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
         setupViewModel()
 
-        viewModel.getWeather(36.778259, -119.417931)
+        val latLng= LatLng(36.778259, -119.417931)
+        viewModel.getWeather(latLng)
         observeWeather()
 
         return binding.root
@@ -124,9 +126,8 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 location?.let {
-                    val latitude = it.latitude
-                    val longitude = it.longitude
-                    viewModel.getWeather(latitude, longitude)
+                    val latLng = LatLng(it.latitude, it.longitude)
+                    viewModel.getWeather(latLng)
                 }
             }
     }

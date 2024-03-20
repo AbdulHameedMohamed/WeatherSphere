@@ -16,7 +16,7 @@
         android:layout_margin="10dp">
 
         <TextView
-            android:id="@+id/tv_day_days"
+            android:id="@+id/tv_day_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sunday"
@@ -24,44 +24,44 @@
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="15dp"
-            app:layout_constraintTop_toTopOf="@id/iv_icon_days"
-            app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"/>
+            app:layout_constraintTop_toTopOf="@id/iv_day_icon"
+            app:layout_constraintBottom_toBottomOf="@id/iv_day_icon"/>
 
         <ImageView
-            android:id="@+id/iv_icon_days"
+            android:id="@+id/iv_day_icon"
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:src="@drawable/sun"
-            app:layout_constraintEnd_toStartOf="@+id/tv_status_days"
+            app:layout_constraintEnd_toStartOf="@+id/tv_day_status"
             app:layout_constraintHorizontal_bias="0.42"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_status_days"
+            android:id="@+id/tv_day_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sunny Day"
+            android:text="@string/sunny_day"
             android:textColor="@color/text_color"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/iv_icon_days"
-            app:layout_constraintTop_toTopOf="@id/iv_icon_days"
-            app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"
+            app:layout_constraintStart_toEndOf="@+id/iv_day_icon"
+            app:layout_constraintTop_toTopOf="@id/iv_day_icon"
+            app:layout_constraintBottom_toBottomOf="@id/iv_day_icon"
             />
 
         <TextView
-            android:id="@+id/tv_degree_days"
+            android:id="@+id/tv_day_degree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="23/13°c"
+            android:text="@string/day_degree"
             android:textColor="@color/text_color"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_icon_days"
-            app:layout_constraintBottom_toBottomOf="@id/iv_icon_days"
+            app:layout_constraintTop_toTopOf="@id/iv_day_icon"
+            app:layout_constraintBottom_toBottomOf="@id/iv_day_icon"
             android:layout_marginEnd="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

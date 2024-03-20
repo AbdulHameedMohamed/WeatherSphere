@@ -1,6 +1,7 @@
 package com.example.weathersphere.model.local
 
 import androidx.room.*
+import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -13,4 +14,13 @@ interface WeatherDao {
 
     @Delete
     fun deleteThisWeather(weather: WeatherResponse)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlaceToFavourite(place: Place)
+
+    @Delete
+    suspend fun deletePlaceFromFavourite(place: Place)
+
+    @Query("SELECT * FROM place")
+    fun getAllFavouritePlaces(): Flow<List<Place>>
 }

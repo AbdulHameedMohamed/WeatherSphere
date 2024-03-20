@@ -16,7 +16,7 @@
         android:minWidth="70dp">
 
         <TextView
-            android:id="@+id/tv_date_hours"
+            android:id="@+id/tv_hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Today"
@@ -35,10 +35,10 @@
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date_hours" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_hour" />
 
         <ImageView
-            android:id="@+id/iv_status_icon_hours"
+            android:id="@+id/iv_status_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
@@ -48,7 +48,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_time_hours" />
 
         <TextView
-            android:id="@+id/tv_degree_hours"
+            android:id="@+id/tv_degree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="19°c"
@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/iv_status_icon_hours" />
+            app:layout_constraintTop_toBottomOf="@id/iv_status_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

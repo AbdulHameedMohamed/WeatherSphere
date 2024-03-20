@@ -1,10 +1,13 @@
 package com.example.weathersphere.model
 
 import android.util.Log
+import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.local.WeatherLocalDataSource
 import com.example.weathersphere.model.remote.WeatherRemoteDataSource
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,11 +32,11 @@ class WeatherRepository private constructor(
             }
     }
 
-    suspend fun refreshWeather(lat: Double, lon: Double) {
+    suspend fun refreshWeather(latLng: LatLng) {
         withContext(Dispatchers.IO) {
             runCatching {
                 Log.d(TAG, "refreshWeather: ")
-                val response = remoteDataSource.getWeather(lat = lat, lon = lon)
+                val response = remoteDataSource.getWeather(latLng)
                 Log.d(TAG, "refreshWeather: ${response.body()}")
                 if (response.isSuccessful) {
                     val weatherResponse = response.body()
@@ -47,6 +50,18 @@ class WeatherRepository private constructor(
                 it.printStackTrace()
             }
         }
+    }
+
+    suspend fun addPlaceToFavourite(place: Place) {
+        localDataSource.insertPlaceToFavourite(place)
+    }
+
+    suspend fun deletePlaceFromFavourite(place: Place) {
+        localDataSource.deletePlaceFromFavourite(place)
+    }
+
+    fun getAllFavouritePlaces(): Flow<List<Place>> {
+        return localDataSource.getAllFavourite()
     }
 
     companion object {
