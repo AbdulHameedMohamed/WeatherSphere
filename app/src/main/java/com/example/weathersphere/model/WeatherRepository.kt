@@ -1,7 +1,7 @@
 package com.example.weathersphere.model
 
 import android.util.Log
-import com.example.weathersphere.model.data.ForecastResponse
+import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.local.WeatherLocalDataSource
 import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 class WeatherRepository private constructor(
@@ -18,8 +17,8 @@ class WeatherRepository private constructor(
     private val localDataSource: WeatherLocalDataSource
 ) {
     private val _weatherFlow =
-        MutableStateFlow<WeatherResult<ForecastResponse>>(WeatherResult.Loading)
-    val weatherFlow: StateFlow<WeatherResult<ForecastResponse>> = _weatherFlow.asStateFlow()
+        MutableStateFlow<WeatherResult<WeatherResponse>>(WeatherResult.Loading)
+    val weatherFlow: StateFlow<WeatherResult<WeatherResponse>> = _weatherFlow.asStateFlow()
     suspend fun getWeatherData() {
             localDataSource.getWeather().catch {
                 Log.d(TAG, "getWeatherData: Fail" + it.message)
@@ -30,11 +29,12 @@ class WeatherRepository private constructor(
             }
     }
 
-    suspend fun refreshWeather(lat: String, lon: String) {
+    suspend fun refreshWeather(lat: Double, lon: Double) {
         withContext(Dispatchers.IO) {
             runCatching {
                 Log.d(TAG, "refreshWeather: ")
                 val response = remoteDataSource.getWeather(lat = lat, lon = lon)
+                Log.d(TAG, "refreshWeather: ${response.body()}")
                 if (response.isSuccessful) {
                     val weatherResponse = response.body()
                     if (weatherResponse != null) {

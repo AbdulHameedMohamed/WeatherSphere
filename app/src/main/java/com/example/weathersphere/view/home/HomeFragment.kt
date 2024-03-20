@@ -16,6 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.DialogLocationBinding
 import com.example.weathersphere.databinding.FragmentHomeBinding
@@ -36,13 +37,15 @@ import pub.devrel.easypermissions.PermissionRequest
 class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
-    private lateinit var daysAdapter: DaysAdapter
-    private lateinit var hoursAdapter: HoursAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 123
         private const val TAG = "HomeFragment"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -55,6 +58,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
         setupViewModel()
 
+        viewModel.getWeather(36.778259, -119.417931)
         observeWeather()
 
         return binding.root
@@ -70,10 +74,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun setupRecyclerViews() {
-        daysAdapter = DaysAdapter()
-        hoursAdapter = HoursAdapter()
-        binding.rvDays.adapter = daysAdapter
-        binding.rvHours.adapter = hoursAdapter
+
     }
 
     private fun observeWeather() {
@@ -83,14 +84,11 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                     .collectLatest { status ->
                         when (status) {
                             is WeatherResult.Loading -> {
-
+                                Log.d(TAG, "observeWeather: Loading")
                             }
 
                             is WeatherResult.Success -> {
-                                daysAdapter.submitList(status.data.forecasts)
-                                hoursAdapter.submitList(status.data.forecasts)
-
-                                Log.d(TAG, "onCreateView: Success ${status.data}")
+                                Log.d(TAG, "onCreateView: Success")
                             }
 
                             is WeatherResult.Error -> {

@@ -6,14 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.weathersphere.model.WeatherRepository
 import com.example.weathersphere.model.WeatherResult
-import com.example.weathersphere.model.data.ForecastResponse
-import kotlinx.coroutines.Dispatchers
+import com.example.weathersphere.model.data.WeatherResponse
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 private const val TAG = "HomeViewModel"
@@ -21,17 +17,23 @@ private const val TAG = "HomeViewModel"
 class HomeViewModel(
     private val repository: WeatherRepository
 ) : ViewModel() {
-    val weatherFlow: StateFlow<WeatherResult<ForecastResponse>>
+    val weatherFlow: StateFlow<WeatherResult<WeatherResponse>>
         get() = repository.weatherFlow
+    private val _selectedLocation = MutableStateFlow<LatLng?>(null)
+    val selectedLocation: StateFlow<LatLng?> = _selectedLocation
+
     init {
         viewModelScope.launch {
             repository.getWeatherData()
         }
     }
+    fun setSelectedLocation(location: LatLng) {
+        _selectedLocation.value = location
+    }
 
     fun getWeather(lat: Double, long: Double) = viewModelScope.launch {
         Log.d(TAG, "getWeather: $lat")
-        repository.refreshWeather("$lat", "$long")
+        repository.refreshWeather(lat, long)
     }
 
     class Factory(private val repository: WeatherRepository) : ViewModelProvider.Factory {

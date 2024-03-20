@@ -1,16 +1,16 @@
 package com.example.weathersphere.model.local
 
 import androidx.room.*
-import com.example.weathersphere.model.data.ForecastResponse
+import com.example.weathersphere.model.data.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WeatherDao {
-    @Query("select * from weather limit 1")
-    fun getWeather(): Flow<ForecastResponse>
+    @Query("select * from weather")
+    fun getWeather(): Flow<WeatherResponse>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(weather: ForecastResponse)
+    fun insert(weather: WeatherResponse)
 
     @Delete
-    fun deleteThisWeather(weather: ForecastResponse)
+    fun deleteThisWeather(weather: WeatherResponse)
 }
