@@ -21,12 +21,13 @@ class HomeViewModel(
 ) : ViewModel() {
     val weatherFlow: StateFlow<WeatherResult<WeatherResponse>>
         get() = repository.weatherFlow
+
     private val _selectedLocation = MutableStateFlow<LatLng?>(null)
     val selectedLocation: StateFlow<LatLng?> = _selectedLocation
 
     init {
         viewModelScope.launch {
-            repository.getWeatherData()
+            repository.getWeather()
         }
     }
     fun setSelectedLocation(location: LatLng) {

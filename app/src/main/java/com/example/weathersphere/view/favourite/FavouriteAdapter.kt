@@ -14,9 +14,7 @@ class FavouriteAdapter(val onItemClick: (place: Place) -> Unit) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteViewHolder {
-        val inflater: LayoutInflater =
-            parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val binding = ItemFavouriteBinding.inflate(inflater, parent, false)
+        val binding = ItemFavouriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavouriteViewHolder(binding)
     }
 

@@ -15,4 +15,11 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="now">Now</string>
+    <string name="home">Home</string>
+    <string name="alert">Alert</string>
+    <string name="setting">Setting</string>
+    <string name="time">9:09 AM</string>
+    <string name="date">9 Sep 2023</string>
+    <string name="notification">Notification</string>
+    <string name="add_alert">Add Alert</string>
 </resources>

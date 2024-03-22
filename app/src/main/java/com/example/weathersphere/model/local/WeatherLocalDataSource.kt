@@ -1,5 +1,6 @@
 package com.example.weathersphere.model.local
 
+import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherResponse
 import kotlinx.coroutines.flow.Flow
@@ -25,5 +26,17 @@ class WeatherLocalDataSource(private val weatherDao: WeatherDao) {
     }
     fun getAllFavourite():Flow<List<Place>> {
         return weatherDao.getAllFavouritePlaces()
+    }
+
+    suspend fun insertAlarm(weatherAlarm: WeatherAlarm) {
+        weatherDao.insertAlarm(weatherAlarm)
+    }
+
+    suspend fun deleteAlarm(weatherAlarm: WeatherAlarm) {
+        weatherDao.deleteAlarm(weatherAlarm)
+    }
+
+    fun getAllAlarms(): Flow<List<WeatherAlarm>> {
+        return weatherDao.getAllAlarms()
     }
 }

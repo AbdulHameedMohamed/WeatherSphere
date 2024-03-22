@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +20,9 @@ import com.example.weathersphere.model.local.WeatherLocalDataSource
 import com.example.weathersphere.model.remote.RetrofitClient
 import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.example.weathersphere.utils.Constants
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class FavouriteFragment : Fragment() {
     private lateinit var binding: FragmentFavouriteBinding
@@ -34,16 +35,27 @@ class FavouriteFragment : Fragment() {
     ): View {
         binding = FragmentFavouriteBinding.inflate(inflater, container, false)
 
-        initRecyclerView()
+        setupRecyclerView()
 
         setListeners()
 
         setupViewModel()
 
+        favouriteViewModel.getAllFavouritePlaces()
+        observeFavourites()
+
         return binding.root
     }
 
-    private fun initRecyclerView() {
+    private fun observeFavourites() {
+        lifecycleScope.launch {
+            favouriteViewModel.favouritePlacesStateFlow.collectLatest {
+                favouriteAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
         val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -68,7 +80,7 @@ class FavouriteFragment : Fragment() {
                 favouriteViewModel.deletePlaceFromFav(place)
                 Snackbar.make(
                     requireView(),
-                    "deleting Location ${place.cityName}",
+                    "delete Location ${place.cityName}",
                     Snackbar.LENGTH_LONG
                 ).apply {
                     setAction("Undo") {
@@ -83,8 +95,7 @@ class FavouriteFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvFavourite)
 
         favouriteAdapter = FavouriteAdapter {
-            // Navigate To Home Screen
-            Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), it.cityName, Toast.LENGTH_SHORT).show()
         }
         binding.rvFavourite.adapter = favouriteAdapter
     }

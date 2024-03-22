@@ -32,7 +32,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapBinding
     private var marker: Marker? = null
     private lateinit var viewModel: HomeViewModel
-    val args: MapFragmentArgs by navArgs()
+    private val args: MapFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +67,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             if (marker == null)
                 Toast.makeText(requireContext(), "You Need To Select Your Location.", Toast.LENGTH_SHORT).show()
             else {
-                val selectedLocation = getSelectedLocation()
+                val selectedLocation = getMarkerLocation()
 
                 if(args.type == Constants.HOME) {
                     viewModel.getWeather(selectedLocation)
@@ -85,6 +85,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    // It Should Be With Navigation Component
     private fun navigateBack() {
         val fragmentManager = parentFragmentManager
         fragmentManager.beginTransaction().commit()
@@ -111,7 +112,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             ?: "Unknown" else "Unknown"
     }
 
-    private fun getSelectedLocation(): LatLng {
+    private fun getMarkerLocation(): LatLng {
         return marker!!.position
     }
 }

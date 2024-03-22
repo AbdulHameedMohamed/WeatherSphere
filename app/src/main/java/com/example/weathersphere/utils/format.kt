@@ -47,3 +47,8 @@ fun formatTimestamp(timestamp: Long, lang: String): String {
     val date = Date(timestamp * 1000)
     return sdf.format(date)
 }
+fun formatLongToString(dateTimeInMillis: Long, pattern: String): String {
+    val resultFormat = SimpleDateFormat(pattern, Locale.getDefault())
+    val date = Date(dateTimeInMillis)
+    return resultFormat.format(date)
+}

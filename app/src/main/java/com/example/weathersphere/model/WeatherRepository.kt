@@ -1,6 +1,7 @@
 package com.example.weathersphere.model
 
 import android.util.Log
+import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.local.WeatherLocalDataSource
@@ -22,7 +23,7 @@ class WeatherRepository private constructor(
     private val _weatherFlow =
         MutableStateFlow<WeatherResult<WeatherResponse>>(WeatherResult.Loading)
     val weatherFlow: StateFlow<WeatherResult<WeatherResponse>> = _weatherFlow.asStateFlow()
-    suspend fun getWeatherData() {
+    suspend fun getWeather() {
             localDataSource.getWeather().catch {
                 Log.d(TAG, "getWeatherData: Fail" + it.message)
 
@@ -62,6 +63,18 @@ class WeatherRepository private constructor(
 
     fun getAllFavouritePlaces(): Flow<List<Place>> {
         return localDataSource.getAllFavourite()
+    }
+
+    suspend fun insertAlarm(weatherAlarm: WeatherAlarm) {
+        localDataSource.insertAlarm(weatherAlarm)
+    }
+
+    suspend fun deleteAlarm(weatherAlarm: WeatherAlarm) {
+        localDataSource.deleteAlarm(weatherAlarm)
+    }
+
+    fun getAllAlarms(): Flow<List<WeatherAlarm>> {
+        return localDataSource.getAllAlarms()
     }
 
     companion object {

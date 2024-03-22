@@ -45,10 +45,6 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         private const val TAG = "HomeFragment"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -160,8 +156,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         val dialogBinding: DialogLocationBinding = DialogLocationBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
         dialogBinding.btnSave.setOnClickListener {
-            val selectedOptionId = dialogBinding.rgLocation.checkedRadioButtonId
-            when (selectedOptionId) {
+            when (dialogBinding.rgLocation.checkedRadioButtonId) {
                 R.id.radio_gps -> {
                     requestLocationPermission()
                 }
