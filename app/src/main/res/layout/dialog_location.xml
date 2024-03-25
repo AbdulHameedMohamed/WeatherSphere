@@ -1,84 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:layout_marginHorizontal="16dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/active_color"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true"
+    app:strokeWidth="0dp">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <RadioGroup
-        android:id="@+id/rg_location"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="32dp"
-        android:checkedButton="@+id/radio_button_1"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
+        <RadioGroup
+            android:id="@+id/rg_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:text="@string/choose_location"
-            android:textColor="@color/text_color"
-            android:textSize="20sp" />
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="32dp"
+            android:checkedButton="@+id/radio_button_1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <RadioButton
-            android:id="@+id/radio_gps"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:text="@string/choose_location"
+                android:textColor="@color/text_color"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/radio_gps"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/text_color"
+                android:checked="true"
+                android:text="@string/gps"
+                android:textStyle="bold"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/radio_map"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/text_color"
+                android:text="@string/map"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btn_save"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/text_color"
-            android:checked="true"
-            android:text="@string/gps"
-            android:textStyle="bold"
-            android:textColor="@color/text_color"
-            android:textSize="16sp" />
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/save"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rg_location"
+            app:layout_constraintStart_toEndOf="@+id/btn_cancel"
+            app:layout_constraintTop_toBottomOf="@+id/rg_location" />
 
-        <RadioButton
-            android:id="@+id/radio_map"
+        <Button
+            android:id="@+id/btn_cancel"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginStart="16dp"
-            android:buttonTint="@color/text_color"
-            android:text="@string/map"
-            android:textColor="@color/text_color"
-            android:textSize="16sp" />
-    </RadioGroup>
+            android:layout_marginTop="16dp"
+            android:text="@string/cancel"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_save"
+            app:layout_constraintStart_toStartOf="@+id/rg_location"
+            app:layout_constraintTop_toBottomOf="@+id/rg_location" />
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/save"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rg_location"
-        app:layout_constraintStart_toEndOf="@+id/btn_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/rg_location" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/cancel"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_save"
-        app:layout_constraintStart_toStartOf="@+id/rg_location"
-        app:layout_constraintTop_toBottomOf="@+id/rg_location" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -43,4 +43,13 @@
                 app:argType="string" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/alertFragment"
+        android:name="com.example.weathersphere.view.alert.AlertFragment"
+        android:label="AlertFragment" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.weathersphere.view.setting.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

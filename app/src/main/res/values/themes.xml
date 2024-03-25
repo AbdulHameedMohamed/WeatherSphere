@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.WeatherSphere" parent="Base.Theme.WeatherSphere" />
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/active_color</item>
+    </style>
 </resources>

@@ -9,8 +9,4 @@ fun changeLanguageLocaleTo(lan: String) {
     AppCompatDelegate.setApplicationLocales(appLocale)
 }
 
-fun getLanguageLocale(): String {
-    val defaultLocale = Locale.getDefault()
-
-    return defaultLocale.language
-}
+fun getLanguageLocale(): String = Locale.getDefault().language

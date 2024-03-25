@@ -42,7 +42,7 @@ class FavouriteViewModel(private val repository: WeatherRepository) : ViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(FavouriteViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return HomeViewModel(repository) as T
+                return FavouriteViewModel(repository) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

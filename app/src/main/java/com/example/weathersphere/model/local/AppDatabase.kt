@@ -6,10 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.WeatherResponse
 
-@Database(entities = [WeatherResponse::class, WeatherAlarm::class], version = 1, exportSchema = false)
+@Database(entities = [WeatherResponse::class, WeatherAlarm::class, Place::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class WeatherDataBase : RoomDatabase() {
     abstract val weatherDao: WeatherDao

@@ -89,6 +89,15 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     // Places SDK
-    implementation("com.google.android.libraries.places:places:3.3.0")
+    implementation("com.google.android.libraries.places:places:3.4.0")
+
+    // Kotlin Coroutines support
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+
+    // DataStore Preferences
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // DataStore Core
+    implementation("androidx.datastore:datastore-core:1.0.0")
 
 }

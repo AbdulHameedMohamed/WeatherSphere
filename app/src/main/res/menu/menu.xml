@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="@string/home"/>
+        android:title="@string/home" />
     <item
         android:id="@+id/favouriteFragment"
         android:icon="@drawable/ic_favourite"
-        android:title="@string/favourite"
-        />
+        android:title="@string/favourite" />
     <item
         android:id="@+id/alertFragment"
         android:icon="@drawable/ic_alarm"
-        android:title="@string/alert"/>
+        android:title="@string/alert" />
     <item
         android:id="@+id/settingFragment"
         android:icon="@drawable/ic_setting"
-        android:title="@string/setting"/>
-
+        android:title="@string/setting" />
 </menu>
