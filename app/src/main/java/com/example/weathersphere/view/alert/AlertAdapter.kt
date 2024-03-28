@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weathersphere.databinding.ItemAlertBinding
 import com.example.weathersphere.model.data.WeatherAlarm
-import com.example.weathersphere.utils.formatLongToString
+import com.example.weathersphere.utils.formatMillisToDateTimeString
 
 class AlertAdapter :
     ListAdapter<WeatherAlarm, AlertAdapter.AlertViewHolder>(RecyclerDiffUtilAlarmItem()) {
@@ -30,10 +30,10 @@ class AlertAdapter :
                 tvZoneName.text = currentItem.zoneName
 
                 tvFromDate.text =
-                    formatLongToString(currentItem.time, "dd MMM yyyy")
+                    formatMillisToDateTimeString(currentItem.time, "dd MMM yyyy")
 
                 tvFromTime.text =
-                    formatLongToString(currentItem.time, "hh:mm a")
+                    formatMillisToDateTimeString(currentItem.time, "hh:mm a")
             }
         }
     }

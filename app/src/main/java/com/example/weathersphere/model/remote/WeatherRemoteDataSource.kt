@@ -7,8 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 import retrofit2.Response
 
 class WeatherRemoteDataSource(private val apiService: ApiService) {
-    suspend fun getWeather(latLng: LatLng): Response<WeatherResponse> {
-        Log.d("TAG", "getWeather: ${getLanguageLocale()}")
-        return apiService.getWeatherResponse(latitude = latLng.latitude, longitude = latLng.longitude, getLanguageLocale())
+    suspend fun getWeather(latLng: LatLng, lang: String= getLanguageLocale()): Response<WeatherResponse> {
+        return apiService.getWeatherResponse(latitude = latLng.latitude, longitude = latLng.longitude, lang)
     }
 }

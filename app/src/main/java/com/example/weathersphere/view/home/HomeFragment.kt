@@ -94,10 +94,10 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun setupViewModel() {
-        val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
+        val weatherApi = WeatherRemoteDataSource(RetrofitClient.apiService)
         val productDao =
             WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
-        val repository = WeatherRepository.getInstance(productsApi, productDao)
+        val repository = WeatherRepository.getInstance(weatherApi, productDao)
         val viewModelFactory = HomeViewModel.Factory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
     }
@@ -141,7 +141,6 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated: ")
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
     }
 

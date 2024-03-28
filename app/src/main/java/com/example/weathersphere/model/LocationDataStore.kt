@@ -24,9 +24,19 @@ class LocationDataStore(private val context: Context) {
         }
     }
 
+    val isNotificationEnabled: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[NOTIFICATION] ?: true
+        }
+
+    suspend fun setNotificationEnabled(selected: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[NOTIFICATION] = selected
+        }
+    }
+
     companion object {
         private val KEY_LOCATION_SELECTED = booleanPreferencesKey("location_selected")
-        const val GPS = "GPS"
-        const val MAP = "MAP"
+        private val NOTIFICATION = booleanPreferencesKey("notification_enabled")
     }
 }
