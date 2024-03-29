@@ -1,6 +1,7 @@
-package com.example.weathersphere.model
+package com.example.weathersphere.model.repository
 
 import android.util.Log
+import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherResponse
@@ -9,34 +10,20 @@ import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 
-class WeatherRepository private constructor(
+class WeatherRepositoryImpl private constructor(
     private val remoteDataSource: WeatherRemoteDataSource,
     private val localDataSource: WeatherLocalDataSource
-) {
-    private val _weatherFlow =
-        MutableStateFlow<WeatherResult<WeatherResponse>>(WeatherResult.Loading)
-    val weatherFlow: StateFlow<WeatherResult<WeatherResponse>> = _weatherFlow.asStateFlow()
-    suspend fun getWeather() {
-            localDataSource.getWeather().catch {
-                Log.d(TAG, "getWeatherData: Fail" + it.message)
+) : WeatherRepository {
 
-                _weatherFlow.value = WeatherResult.Error(it)
-            }.collectLatest {
-                _weatherFlow.value = WeatherResult.Success(it)
-            }
+    override suspend fun getWeather():Flow<WeatherResponse> {
+            return localDataSource.getWeather()
     }
 
-    suspend fun refreshWeather(latLng: LatLng) {
+    override suspend fun refreshWeather(latLng: LatLng) {
         withContext(Dispatchers.IO) {
             runCatching {
-                Log.d(TAG, "refreshWeather: ")
                 val response = remoteDataSource.getWeather(latLng)
                 Log.d(TAG, "refreshWeather: ${response.body()}")
                 if (response.isSuccessful) {
@@ -53,39 +40,39 @@ class WeatherRepository private constructor(
         }
     }
 
-    suspend fun addPlaceToFavourite(place: Place) {
+    override suspend fun addToFavourite(place: Place) {
         localDataSource.insertPlaceToFavourite(place)
     }
 
-    suspend fun deletePlaceFromFavourite(place: Place) {
+    override suspend fun deleteFromFavourite(place: Place) {
         localDataSource.deletePlaceFromFavourite(place)
     }
 
-    fun getAllFavouritePlaces(): Flow<List<Place>> {
+    override fun getAllFavouritePlaces(): Flow<List<Place>> {
         return localDataSource.getAllFavourite()
     }
 
-    suspend fun insertAlarm(weatherAlarm: WeatherAlarm) {
+    override suspend fun insertAlarm(weatherAlarm: WeatherAlarm) {
         localDataSource.insertAlarm(weatherAlarm)
     }
 
-    suspend fun deleteAlarm(weatherAlarm: WeatherAlarm) {
+    override suspend fun deleteAlarm(weatherAlarm: WeatherAlarm) {
         localDataSource.deleteAlarm(weatherAlarm)
     }
 
-    fun getAllAlarms(): Flow<List<WeatherAlarm>> {
+    override fun getAllAlarms(): Flow<List<WeatherAlarm>> {
         return localDataSource.getAllAlarms()
     }
 
     companion object {
         private const val TAG = "WeatherRepository"
-        private lateinit var repository: WeatherRepository
+        private lateinit var repository: WeatherRepositoryImpl
         fun getInstance(
             apiClient: WeatherRemoteDataSource,
             localDataSource: WeatherLocalDataSource
-        ): WeatherRepository {
-            if (!::repository.isInitialized)
-                repository = WeatherRepository(apiClient, localDataSource)
+        ): WeatherRepositoryImpl {
+            if (!Companion::repository.isInitialized)
+                repository = WeatherRepositoryImpl(apiClient, localDataSource)
             return repository
         }
     }

@@ -1,0 +1,3 @@
+package com.example.weathersphere.model.repository
+
+class WeatherRepositoryImplTest

@@ -1,4 +1,4 @@
-package com.example.weathersphere.view.setting
+package com.example.weathersphere.ui.setting
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.FragmentSettingBinding
-import com.example.weathersphere.model.LocationDataStore
-import com.example.weathersphere.model.WeatherRepository
+import com.example.weathersphere.model.datastore.LocationDataStore
+import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.local.DatabaseProvider
 import com.example.weathersphere.model.local.WeatherLocalDataSource
 import com.example.weathersphere.model.remote.RetrofitClient
@@ -62,7 +62,7 @@ class SettingFragment : Fragment() {
         val weatherApi = WeatherRemoteDataSource(RetrofitClient.apiService)
         val productDao =
             WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
-        val repository = WeatherRepository.getInstance(weatherApi, productDao)
+        val repository = WeatherRepositoryImpl.getInstance(weatherApi, productDao)
         val viewModelFactory = HomeViewModel.Factory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
     }

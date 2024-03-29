@@ -1,4 +1,4 @@
-package com.example.weathersphere.view.alert
+package com.example.weathersphere.ui.alert
 
 import android.app.Dialog
 import android.content.Intent
@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.DialogAlertBinding
 import com.example.weathersphere.databinding.FragmentAlertBinding
-import com.example.weathersphere.model.LocationDataStore
-import com.example.weathersphere.model.WeatherRepository
+import com.example.weathersphere.model.datastore.LocationDataStore
+import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.local.DatabaseProvider
@@ -251,7 +251,7 @@ class AlertFragment : Fragment() {
         val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
         val productDao =
             WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
-        val repository = WeatherRepository.getInstance(productsApi, productDao)
+        val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
         val viewModelFactory =
             AlertViewModel.Factory(repository, AlarmScheduler.getInstance(requireActivity().application))
         viewModel = ViewModelProvider(this, viewModelFactory)[AlertViewModel::class.java]

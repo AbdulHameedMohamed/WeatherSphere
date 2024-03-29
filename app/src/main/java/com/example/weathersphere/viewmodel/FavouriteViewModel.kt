@@ -1,11 +1,11 @@
-package com.example.weathersphere.view.favourite
+package com.example.weathersphere.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.weathersphere.model.WeatherRepository
+import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.data.Place
-import com.example.weathersphere.viewmodel.HomeViewModel
+import com.example.weathersphere.model.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,15 +18,15 @@ class FavouriteViewModel(private val repository: WeatherRepository) : ViewModel(
         MutableStateFlow(emptyList())
     val favouritePlacesStateFlow: StateFlow<List<Place>> get() = _favouritePlacesMutableStateFlow
 
-    fun insertPlaceToFavourite(place: Place) {
+    fun insertToFavourite(place: Place) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addPlaceToFavourite(place)
+            repository.addToFavourite(place)
         }
     }
 
-    fun deletePlaceFromFav(place: Place) {
+    fun deleteFromFavourite(place: Place) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deletePlaceFromFavourite(place)
+            repository.deleteFromFavourite(place)
         }
     }
 
@@ -38,7 +38,7 @@ class FavouriteViewModel(private val repository: WeatherRepository) : ViewModel(
         }
     }
 
-    class Factory(private val repository: WeatherRepository) : ViewModelProvider.Factory {
+    class Factory(private val repository: WeatherRepositoryImpl) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(FavouriteViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")

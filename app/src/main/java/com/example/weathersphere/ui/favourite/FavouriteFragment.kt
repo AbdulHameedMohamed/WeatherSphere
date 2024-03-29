@@ -1,4 +1,4 @@
-package com.example.weathersphere.view.favourite
+package com.example.weathersphere.ui.favourite
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -14,12 +14,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.FragmentFavouriteBinding
-import com.example.weathersphere.model.WeatherRepository
+import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.local.DatabaseProvider
 import com.example.weathersphere.model.local.WeatherLocalDataSource
 import com.example.weathersphere.model.remote.RetrofitClient
 import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.example.weathersphere.utils.Constants
+import com.example.weathersphere.viewmodel.FavouriteViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -77,14 +78,14 @@ class FavouriteFragment : Fragment() {
                 mediaPlayer.setOnCompletionListener { mp ->
                     mp.release()
                 }
-                favouriteViewModel.deletePlaceFromFav(place)
+                favouriteViewModel.deleteFromFavourite(place)
                 Snackbar.make(
                     requireView(),
                     "delete Location ${place.cityName}",
                     Snackbar.LENGTH_LONG
                 ).apply {
                     setAction("Undo") {
-                        favouriteViewModel.insertPlaceToFavourite(place)
+                        favouriteViewModel.insertToFavourite(place)
                     }
                     show()
                 }
@@ -104,7 +105,7 @@ class FavouriteFragment : Fragment() {
         val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
         val productDao =
             WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
-        val repository = WeatherRepository.getInstance(productsApi, productDao)
+        val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
 
         val factory = FavouriteViewModel.Factory(repository)
         favouriteViewModel = ViewModelProvider(this, factory)[FavouriteViewModel::class.java]

@@ -1,4 +1,4 @@
-package com.example.weathersphere.view.alert
+package com.example.weathersphere.ui.alert
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

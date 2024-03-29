@@ -1,4 +1,4 @@
-package com.example.weathersphere.model
+package com.example.weathersphere.model.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

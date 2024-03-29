@@ -1,4 +1,4 @@
-package com.example.weathersphere.view.map
+package com.example.weathersphere.ui.map
 
 import android.location.Geocoder
 import android.os.Bundle
@@ -9,9 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.example.weathersphere.ui.activity.MainActivity
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.FragmentMapBinding
-import com.example.weathersphere.model.WeatherRepository
+import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.local.DatabaseProvider
 import com.example.weathersphere.model.local.WeatherLocalDataSource
@@ -40,19 +41,27 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     ): View {
         binding = FragmentMapBinding.inflate(inflater, container, false)
 
+        setBottomNavVisibility(View.GONE)
+
         setupViewModel()
 
         setupMap()
 
         setListeners()
+
         return binding.root
+    }
+
+    private fun setBottomNavVisibility(visibility: Int) {
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.binding.bottomNavigation.visibility = visibility
     }
 
     private fun setupViewModel() {
         val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
         val productDao =
             WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
-        val repository = WeatherRepository.getInstance(productsApi, productDao)
+        val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
         val viewModelFactory = HomeViewModel.Factory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
     }
@@ -114,5 +123,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun getMarkerLocation(): LatLng {
         return marker!!.position
+    }
+
+    override fun onDestroyView() {
+        setBottomNavVisibility(View.VISIBLE)
+        super.onDestroyView()
     }
 }

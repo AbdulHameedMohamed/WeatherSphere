@@ -1,4 +1,4 @@
-package com.example.weathersphere.view.home
+package com.example.weathersphere.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -23,8 +23,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.DialogLocationBinding
 import com.example.weathersphere.databinding.FragmentHomeBinding
-import com.example.weathersphere.model.LocationDataStore
-import com.example.weathersphere.model.WeatherRepository
+import com.example.weathersphere.model.datastore.LocationDataStore
+import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.local.DatabaseProvider
 import com.example.weathersphere.model.local.WeatherLocalDataSource
@@ -97,7 +97,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         val weatherApi = WeatherRemoteDataSource(RetrofitClient.apiService)
         val productDao =
             WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
-        val repository = WeatherRepository.getInstance(weatherApi, productDao)
+        val repository = WeatherRepositoryImpl.getInstance(weatherApi, productDao)
         val viewModelFactory = HomeViewModel.Factory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
     }

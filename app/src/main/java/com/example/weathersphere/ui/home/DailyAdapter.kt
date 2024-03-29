@@ -1,4 +1,4 @@
-package com.example.weathersphere.view.home
+package com.example.weathersphere.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +9,6 @@ import com.example.weathersphere.databinding.ItemDailyBinding
 import com.example.weathersphere.model.data.Daily
 import com.example.weathersphere.utils.formatDayOfWeek
 import com.example.weathersphere.utils.setIconFromApi
-import java.util.*
 import kotlin.math.roundToInt
 
 class DailyAdapter : ListAdapter<Daily, DailyAdapter.ViewHolder>(DiffUtils) {
