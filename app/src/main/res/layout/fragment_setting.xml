@@ -1,14 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.setting.SettingFragment">
+    tools:context="view.setting.SettingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/setting"
+        android:textColor="@color/text_color"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/active_color"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toStartOf="@+id/cv_wind"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:rippleColor="@color/text_color"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/location"
+            android:textColor="@color/text_color"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rg_location"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:checkedButton="@+id/rb_gps"
+            android:padding="20dp"
+            android:theme="@style/Widget.App.RadioButton">
+
+            <RadioButton
+                android:id="@+id/rb_gps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/gps"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
+
+            <RadioButton
+                android:id="@+id/rb_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/map"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/active_color"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cv_location"
+        app:layout_constraintTop_toTopOf="@id/cv_location"
+        app:rippleColor="@color/text_color"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/wind_speed"
+            android:textColor="@color/text_color"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup_setting_wind"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:checkedButton="@+id/rb_meter_second"
+            android:padding="20dp"
+            android:theme="@style/Widget.App.RadioButton">
+
+
+            <RadioButton
+                android:id="@+id/rb_meter_second"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/meter_second"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
+
+            <RadioButton
+                android:id="@+id/rb_mile_hour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/mile_hour"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/active_color"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toStartOf="@+id/cv_notification"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv_location"
+        app:rippleColor="@color/text_color"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/language"
+            android:textColor="@color/text_color"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rg_language"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:checkedButton="@+id/rb_english"
+            android:padding="20dp"
+            android:theme="@style/Widget.App.RadioButton" >
+
+
+            <RadioButton
+                android:id="@+id/rb_english"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/english"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
+
+            <RadioButton
+                android:id="@+id/rb_arabic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/arabic"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/active_color"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cv_language"
+        app:layout_constraintTop_toTopOf="@id/cv_language"
+        app:rippleColor="@color/text_color"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/notification"
+            android:textColor="@color/text_color"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rg_notification"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:checkedButton="@+id/rb_enable"
+            android:padding="20dp"
+            android:theme="@style/Widget.App.RadioButton" >
+
+
+            <RadioButton
+                android:id="@+id/rb_enable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/enable"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
+
+            <RadioButton
+                android:id="@+id/rb_disable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/disable"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/active_color"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintStart_toStartOf="@id/cv_language"
+        app:layout_constraintEnd_toEndOf="@id/cv_notification"
+        app:layout_constraintTop_toBottomOf="@id/cv_language"
+        app:rippleColor="@color/text_color"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/temperature"
+            android:textColor="@color/text_color"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rg_temperature"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:checkedButton="@+id/rb_celsius"
+            android:padding="20dp"
+            android:theme="@style/Widget.App.RadioButton" >
+
+
+            <RadioButton
+                android:id="@+id/rb_celsius"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/celsius"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
+
+            <RadioButton
+                android:id="@+id/rb_kelvin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/kelvin"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rb_fahrenheit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/fahrenheit"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+        </RadioGroup>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

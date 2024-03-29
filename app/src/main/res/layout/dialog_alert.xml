@@ -75,7 +75,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
         <RadioGroup
             android:id="@+id/radioGroup_Alert_dialog"
             android:layout_width="wrap_content"
@@ -86,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_alarm_time"
-            >
+            android:theme="@style/Widget.App.RadioButton">
 
             <RadioButton
                 android:id="@+id/radio_alert"

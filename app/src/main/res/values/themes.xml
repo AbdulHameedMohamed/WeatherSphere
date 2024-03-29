@@ -9,4 +9,14 @@
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/active_color</item>
     </style>
+
+    <style name="Widget.App.RadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.RadioButton</item>
+    </style>
+
+    <style name="ThemeOverlay.App.RadioButton" parent="">
+        <item name="colorOnSurface">@color/shrine_pink_900</item>
+        <item name="colorPrimary">@color/shrine_pink_900</item>
+    </style>
+
 </resources>

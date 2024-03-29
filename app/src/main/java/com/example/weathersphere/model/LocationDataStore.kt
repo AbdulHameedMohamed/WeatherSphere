@@ -18,9 +18,9 @@ class LocationDataStore(private val context: Context) {
             preferences[KEY_LOCATION_SELECTED] ?: false
         }
 
-    suspend fun setLocationSelected(selected: Boolean) {
+    suspend fun setLocationSelected(isSelected: Boolean) {
         context.dataStore.edit { preferences ->
-            preferences[KEY_LOCATION_SELECTED] = selected
+            preferences[KEY_LOCATION_SELECTED] = isSelected
         }
     }
 
@@ -29,14 +29,62 @@ class LocationDataStore(private val context: Context) {
             preferences[NOTIFICATION] ?: true
         }
 
-    suspend fun setNotificationEnabled(selected: Boolean) {
+    suspend fun setNotificationEnabled(isEnabled: Boolean) {
         context.dataStore.edit { preferences ->
-            preferences[NOTIFICATION] = selected
+            preferences[NOTIFICATION] = isEnabled
+        }
+    }
+
+    val getLocation: Flow<String> = context.dataStore.data
+        .map { preferences ->
+            preferences[LOCATION] ?: ""
+        }
+
+    suspend fun setLocation(location: String) {
+        context.dataStore.edit { preferences ->
+            preferences[LOCATION] = location
+        }
+    }
+
+    val getWindSpeed: Flow<String> = context.dataStore.data
+        .map { preferences ->
+            preferences[WIND_SPEED] ?: ""
+        }
+
+    suspend fun setWindSpeed(windSpeed: String) {
+        context.dataStore.edit { preferences ->
+            preferences[WIND_SPEED] = windSpeed
+        }
+    }
+
+    val getLanguage: Flow<String> = context.dataStore.data
+        .map { preferences ->
+            preferences[LANGUAGE] ?: ""
+        }
+
+    suspend fun setLanguage(language: String) {
+        context.dataStore.edit { preferences ->
+            preferences[LANGUAGE] = language
+        }
+    }
+
+    val getTemperature: Flow<String> = context.dataStore.data
+        .map { preferences ->
+            preferences[TEMPERATURE] ?: ""
+        }
+
+    suspend fun setTemperature(temperature: String) {
+        context.dataStore.edit { preferences ->
+            preferences[TEMPERATURE] = temperature
         }
     }
 
     companion object {
         private val KEY_LOCATION_SELECTED = booleanPreferencesKey("location_selected")
         private val NOTIFICATION = booleanPreferencesKey("notification_enabled")
+        private val LOCATION = stringPreferencesKey("location")
+        private val WIND_SPEED = stringPreferencesKey("wind")
+        private val LANGUAGE = stringPreferencesKey("language")
+        private val TEMPERATURE = stringPreferencesKey("temperature")
     }
 }

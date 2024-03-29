@@ -1,5 +1,8 @@
 package com.example.weathersphere.utils
 
+import android.app.Activity
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import java.util.Locale

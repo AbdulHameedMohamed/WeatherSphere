@@ -24,4 +24,17 @@
     <string name="add_alert">Add Alert</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="weather_alarm">Weather Alarm</string>
+    <string name="location">Location</string>
+    <string name="meter_second">Meter/Second</string>
+    <string name="mile_hour">Mile/Hour</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="temperature">Temperature</string>
+    <string name="celsius">Celsius</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="fahrenheit">Fahrenheit</string>
 </resources>
