@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.FragmentSettingBinding
-import com.example.weathersphere.model.datastore.LocationDataStore
+import com.example.weathersphere.model.datastore.WeatherDataStore
 import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.local.DatabaseProvider
 import com.example.weathersphere.model.local.WeatherLocalDataSource
@@ -29,8 +29,8 @@ import kotlinx.coroutines.launch
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private lateinit var viewModel: HomeViewModel
-    private val locationDataStore by lazy {
-        LocationDataStore(requireContext())
+    private val weatherDataStore by lazy {
+        WeatherDataStore(requireContext())
     }
 
     private var locationAnimation: Animation? = null
@@ -53,7 +53,7 @@ class SettingFragment : Fragment() {
 
         cardsAnimation()
 
-        setupRadioButtons()
+        //setupRadioButtons()
 
         observeSettings()
     }
@@ -96,23 +96,41 @@ class SettingFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                locationDataStore.getLocation.collect { location ->
+                weatherDataStore.getLocation.collect { location ->
                     updateLocationRadioButton(location)
                 }
+            }
+        }
 
-                locationDataStore.getWindSpeed.collect { windSpeed ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                weatherDataStore.getWindSpeed.collect { windSpeed ->
                     updateWindSpeedRadioButton(windSpeed)
                 }
+            }
+        }
 
-                locationDataStore.getLanguage.collect { language ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                weatherDataStore.getLanguage.collect { language ->
                     updateLanguageRadioButton(language)
                 }
+            }
+        }
 
-                locationDataStore.isNotificationEnabled.collect { notificationEnabled ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                weatherDataStore.isNotificationEnabled.collect { notificationEnabled ->
                     updateNotificationRadioButton(notificationEnabled)
                 }
+            }
+        }
 
-                locationDataStore.getTemperature.collect { temperature ->
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                weatherDataStore.getTemperature.collect { temperature ->
                     updateTemperatureRadioButton(temperature)
                 }
             }
@@ -125,10 +143,7 @@ class SettingFragment : Fragment() {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     val locationValue =
                         if (checkedId == R.id.rb_map) Constants.MAP else Constants.GPS
-                    locationDataStore.setLocation(locationValue)
-                    if (checkedId == R.id.rb_gps) {
-                        //viewModel.getLocation(requireContext())
-                    }
+                    weatherDataStore.setLocation(locationValue)
                 }
             }
         }
@@ -138,7 +153,7 @@ class SettingFragment : Fragment() {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     val windSpeedValue =
                         if (checkedId == R.id.rb_meter_second) Constants.METER_SEC else Constants.MILE_HOUR
-                    locationDataStore.setWindSpeed(windSpeedValue)
+                    weatherDataStore.setWindSpeed(windSpeedValue)
                 }
             }
         }
@@ -148,7 +163,7 @@ class SettingFragment : Fragment() {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     val languageValue =
                         if (checkedId == R.id.rb_arabic) Constants.ARABIC else Constants.ENGLISH
-                    locationDataStore.setLanguage(languageValue)
+                    weatherDataStore.setLanguage(languageValue)
                     changeLanguageLocaleTo(languageValue)
                     requireContext().showToast("WeatherSphere is Restarting Now")
                     restartApplication()
@@ -161,7 +176,7 @@ class SettingFragment : Fragment() {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     val notificationValue =
                         if (checkedId == R.id.rb_enable) Constants.ENABLE else Constants.DISABLE
-                    locationDataStore.setNotificationEnabled(notificationValue == Constants.ENABLE)
+                    weatherDataStore.setNotificationEnabled(notificationValue == Constants.ENABLE)
                 }
             }
         }
@@ -174,7 +189,7 @@ class SettingFragment : Fragment() {
                         R.id.rb_kelvin -> Constants.KELVIN
                         else -> Constants.FAHRENHEIT
                     }
-                    locationDataStore.setTemperature(temperatureValue)
+                    weatherDataStore.setTemperature(temperatureValue)
                 }
             }
         }

@@ -7,8 +7,6 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="city">Al-Obour</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="favourite">Favourite</string>
     <string name="sunny_day">Sunny Day</string>
     <string name="day_degree">23/13°c</string>
@@ -37,4 +35,11 @@
     <string name="celsius">Celsius</string>
     <string name="kelvin">Kelvin</string>
     <string name="fahrenheit">Fahrenheit</string>
+    <string name="hpa">hpa</string>
+    <string name="percentage">%</string>
+    <string name="k">K</string>
+    <string name="f">F</string>
+    <string name="c">C</string>
+    <string name="m">m</string>
+    <string name="notification_title">Today Weather</string>
 </resources>

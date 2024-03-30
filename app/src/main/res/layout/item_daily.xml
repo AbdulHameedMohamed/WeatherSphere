@@ -7,7 +7,7 @@
     app:cardCornerRadius="10dp"
     app:cardUseCompatPadding="true"
     app:cardElevation="3dp"
-    android:backgroundTint="@color/second_color_yellow"
+    android:backgroundTint="@color/active_color"
     app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sunday"
-            android:textColor="@color/text_color"
+            android:textColor="@color/textColor"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="15dp"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sunny_day"
-            android:textColor="@color/text_color"
+            android:textColor="@color/textColor"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/day_degree"
-            android:textColor="@color/text_color"
+            android:textColor="@color/textColor"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_day_icon"

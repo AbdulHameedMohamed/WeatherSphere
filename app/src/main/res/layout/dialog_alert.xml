@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/active_color"
+    android:backgroundTint="@color/teal_700"
     app:cardCornerRadius="20dp"
     app:cardElevation="3dp"
     app:cardUseCompatPadding="true"
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_alarm"
-            android:textColor="@color/text_color"
+            android:textColor="@color/textColor"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
             android:id="@+id/cv_alarm_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/baseColor"
+            android:backgroundTint="@color/purple_500"
             android:clickable="true"
             app:cardCornerRadius="25dp"
             app:cardElevation="3dp"
@@ -41,7 +41,7 @@
             app:layout_constraintEnd_toEndOf="@id/title_alert_dialog"
             app:layout_constraintStart_toStartOf="@id/title_alert_dialog"
             app:layout_constraintTop_toBottomOf="@id/title_alert_dialog"
-            app:rippleColor="@color/text_color"
+            app:rippleColor="@color/textColor"
             app:strokeWidth="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,8 +54,8 @@
                     android:id="@+id/tv_from_time_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12:00 AM"
-                    android:textColor="@color/text_color"
+                    tools:text="12:00 AM"
+                    android:textColor="@color/textColor"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -65,8 +65,8 @@
                     android:id="@+id/tv_from_date_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="9 SEP 1999"
-                    android:textColor="@color/text_color"
+                    tools:text="9 SEP 1999"
+                    android:textColor="@color/textColor"
                     android:textSize="11sp"
                     app:layout_constraintEnd_toEndOf="@id/tv_from_time_dialog"
                     app:layout_constraintStart_toStartOf="@id/tv_from_time_dialog"
@@ -93,7 +93,7 @@
                 android:layout_height="match_parent"
                 android:paddingEnd="20dp"
                 android:text="@string/alert"
-                android:textColor="@color/text_color"
+                android:textColor="@color/textColor"
                 tools:ignore="RtlSymmetry" />
 
             <RadioButton
@@ -101,14 +101,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/notification"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/textColor" />
         </RadioGroup>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btn_save_dialog"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:backgroundTint="@color/shrine_pink_900"
+            android:backgroundTint="@color/purple_700"
             android:clickable="true"
             android:elevation="3dp"
             app:cardCornerRadius="30dp"
@@ -116,7 +116,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/radioGroup_Alert_dialog"
-            app:rippleColor="@color/baseColor"
+            app:rippleColor="@color/purple_700"
             app:strokeWidth="0dp">
 
             <TextView
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/save"
-                android:textColor="@color/baseColor"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </com.google.android.material.card.MaterialCardView>

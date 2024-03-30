@@ -36,7 +36,7 @@ class AlertViewModel(
             repository.getWeather().catch {
                     _weatherFlow.value = WeatherResult.Error(it)
                 }.collectLatest {
-                    _weatherFlow.value = WeatherResult.Success(it)
+                    _weatherFlow.value = WeatherResult.Success(it!!)
                 }
         }
     }

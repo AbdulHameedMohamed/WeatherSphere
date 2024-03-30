@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.weathersphere.ui.activity.MainActivity
 import com.example.weathersphere.R
@@ -26,14 +28,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentMapBinding
     private var marker: Marker? = null
-    private lateinit var viewModel: HomeViewModel
     private val args: MapFragmentArgs by navArgs()
+    private val viewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +46,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding = FragmentMapBinding.inflate(inflater, container, false)
 
         setBottomNavVisibility(View.GONE)
-
-        setupViewModel()
 
         setupMap()
 
@@ -55,15 +57,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun setBottomNavVisibility(visibility: Int) {
         val mainActivity = requireActivity() as MainActivity
         mainActivity.binding.bottomNavigation.visibility = visibility
-    }
-
-    private fun setupViewModel() {
-        val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
-        val productDao =
-            WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
-        val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
-        val viewModelFactory = HomeViewModel.Factory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
     }
 
     private fun setupMap() {
@@ -79,7 +72,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 val selectedLocation = getMarkerLocation()
 
                 if(args.type == Constants.HOME) {
-                    viewModel.getWeather(selectedLocation)
+                    viewModel.setSelectedLocation(selectedLocation)
                 } else if(args.type == Constants.FAVOURITE) {
                     viewModel.addPlaceToFavourite(
                         Place(

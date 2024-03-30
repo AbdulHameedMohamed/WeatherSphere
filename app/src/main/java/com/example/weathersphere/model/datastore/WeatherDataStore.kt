@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-class LocationDataStore(private val context: Context) {
+class WeatherDataStore(private val context: Context) {
 
     val locationSelected: Flow<Boolean> = context.dataStore.data
         .map { preferences ->

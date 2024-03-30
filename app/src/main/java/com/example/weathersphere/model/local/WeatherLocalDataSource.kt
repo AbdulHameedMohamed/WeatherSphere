@@ -6,7 +6,7 @@ import com.example.weathersphere.model.data.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
 class WeatherLocalDataSource(private val weatherDao: WeatherDao) {
-    fun getWeather(): Flow<WeatherResponse> {
+    fun getWeather(): Flow<WeatherResponse?> {
         return weatherDao.getWeather()
     }
 

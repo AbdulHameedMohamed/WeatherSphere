@@ -39,6 +39,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         val alarm = intent?.getSerializableExtra(Constants.WEATHER_ALARM) as WeatherAlarm
+        Log.d(TAG, "onReceive: ${alarm.latitude}")
 
         var messageFromApi = "The weather has cleared up and conditions are now good"
 

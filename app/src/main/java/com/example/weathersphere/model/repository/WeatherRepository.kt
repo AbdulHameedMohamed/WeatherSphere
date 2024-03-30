@@ -5,7 +5,6 @@ import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.WeatherResponse
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface WeatherRepository {
     fun getAllFavouritePlaces(): Flow<List<Place>>
@@ -14,6 +13,6 @@ interface WeatherRepository {
     fun getAllAlarms(): Flow<List<WeatherAlarm>>
     suspend fun insertAlarm(weatherAlarm: WeatherAlarm)
     suspend fun deleteAlarm(weatherAlarm: WeatherAlarm)
-    suspend fun getWeather(): Flow<WeatherResponse>
-    suspend fun refreshWeather(latLng: LatLng)
+    suspend fun getWeather(): Flow<WeatherResponse?>
+    suspend fun refreshWeather(latLng: LatLng, lang: String= "en")
 }

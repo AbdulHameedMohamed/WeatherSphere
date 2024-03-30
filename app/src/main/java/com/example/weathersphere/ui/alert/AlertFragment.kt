@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.DialogAlertBinding
 import com.example.weathersphere.databinding.FragmentAlertBinding
-import com.example.weathersphere.model.datastore.LocationDataStore
+import com.example.weathersphere.model.datastore.WeatherDataStore
 import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.WeatherAlarm
@@ -31,8 +32,10 @@ import com.example.weathersphere.model.local.DatabaseProvider
 import com.example.weathersphere.model.local.WeatherLocalDataSource
 import com.example.weathersphere.model.remote.RetrofitClient
 import com.example.weathersphere.model.remote.WeatherRemoteDataSource
+import com.example.weathersphere.ui.home.HomeFragment
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.utils.NotificationManager
+import com.example.weathersphere.utils.RC_NOTIFICATION_PERMISSION
 import com.example.weathersphere.utils.checkNotificationPermission
 import com.example.weathersphere.utils.formatHourMinuteToString
 import com.example.weathersphere.utils.formatMillisToDateTimeString
@@ -45,20 +48,26 @@ import com.example.weathersphere.work.AlarmScheduler
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import pub.devrel.easypermissions.EasyPermissions
 import java.util.Calendar
 
-class AlertFragment : Fragment() {
+class AlertFragment : Fragment(), EasyPermissions.PermissionCallbacks {
+    companion object {
+        private const val TAG = "AlertFragment"
+    }
+
     private lateinit var binding: FragmentAlertBinding
     private lateinit var dialogAlertBinding: DialogAlertBinding
     private lateinit var viewModel: AlertViewModel
     private lateinit var adapter: AlertAdapter
-    private val locationDataStore by lazy {
-        LocationDataStore(requireContext())
+    private val weatherDataStore by lazy {
+        WeatherDataStore(requireContext())
     }
 
     private var currentLatitude: Double = 0.0
@@ -89,18 +98,35 @@ class AlertFragment : Fragment() {
 
     private fun setListeners() {
         binding.fabAddAlert.setOnClickListener {
-            lifecycleScope.launch {
-                if (isNotificationEnabled()) {
-                    if (checkNotificationPermission(requireContext())) {
-                        showWeatherAlertDialog()
-                    } else {
-                        requestNotificationPermission(requireActivity())
-                    }
+            Log.d(TAG, "setListeners: ${isNotificationEnabled()}")
+            if (isNotificationEnabled()) {
+                if (checkNotificationPermission(requireContext())) {
+                    showWeatherAlertDialog()
                 } else {
-                    requireContext().showToast("You need to enable notifications from settings first.")
+                    requestNotificationPermission(requireActivity())
+                    //requestNotification()
+                    //showSettingDialog()
                 }
+            } else {
+                requireContext().showToast("You need to enable notifications from settings first.")
             }
         }
+    }
+
+    private fun showSettingDialog() {
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            com.google.android.material.R.style.MaterialAlertDialog_Material3
+        )
+            .setTitle("Notification Permission")
+            .setMessage("Notification permission is required, Please allow notification permission from setting")
+            .setPositiveButton("Ok") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.parse("package:com.example.weathersphere")
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun observeStateFlow() {
@@ -109,16 +135,16 @@ class AlertFragment : Fragment() {
                 viewModel.alarmsStateFlow.collectLatest {
                     adapter.submitList(it)
                 }
-
+            }
+        }
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.weatherFlow.collectLatest {
                     if (it is WeatherResult.Success) {
                         currentLatitude = it.data.lat
                         currentLongitude = it.data.lon
                         currentZoneName = it.data.timezone
-                        try {
-                            currentZoneName = setLocationNameByGeoCoder(it.data, requireContext())
-                        } catch (_: Exception) {
-                        }
+                        currentZoneName = setLocationNameByGeoCoder(it.data, requireContext())
                     }
                 }
             }
@@ -163,8 +189,8 @@ class AlertFragment : Fragment() {
                     WeatherAlarm(time, kind, currentLatitude, currentLongitude, currentZoneName)
 
                 if (kind == Constants.ALERT && !Settings.canDrawOverlays(requireContext())) {
-                        requestOverlayPermission()
-                        return@setOnClickListener
+                    requestOverlayPermission()
+                    return@setOnClickListener
                 }
 
                 viewModel.createAlarm(weatherAlarm)
@@ -239,11 +265,14 @@ class AlertFragment : Fragment() {
         startActivity(intent)
     }
 
-    private suspend fun isNotificationEnabled(): Boolean {
+    private fun isNotificationEnabled(): Boolean {
         var isNotificationEnabled = false
-        locationDataStore.isNotificationEnabled.collect {
-            isNotificationEnabled = it
+        lifecycleScope.launch {
+            weatherDataStore.isNotificationEnabled.collect {
+                isNotificationEnabled = it
+            }
         }
+        Log.d(TAG, "isNotificationEnabled: $isNotificationEnabled")
         return isNotificationEnabled
     }
 
@@ -253,7 +282,10 @@ class AlertFragment : Fragment() {
             WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
         val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
         val viewModelFactory =
-            AlertViewModel.Factory(repository, AlarmScheduler.getInstance(requireActivity().application))
+            AlertViewModel.Factory(
+                repository,
+                AlarmScheduler.getInstance(requireActivity().application)
+            )
         viewModel = ViewModelProvider(this, viewModelFactory)[AlertViewModel::class.java]
     }
 
@@ -299,5 +331,27 @@ class AlertFragment : Fragment() {
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallBack)
         itemTouchHelper.attachToRecyclerView(binding.rvAlerts)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == RC_NOTIFICATION_PERMISSION) {
+            showWeatherAlertDialog()
+        }
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == RC_NOTIFICATION_PERMISSION) {
+            Toast.makeText(requireContext(), "Notification permission denied", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 }

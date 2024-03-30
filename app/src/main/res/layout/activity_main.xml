@@ -29,7 +29,7 @@
         app:menu="@menu/menu"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
         android:elevation="15dp"
-        app:itemRippleColor="@color/second_color_yellow"
-        app:itemTextColor="@color/text_color" />
+        app:itemRippleColor="@color/purple_500"
+        app:itemTextColor="@color/textColor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

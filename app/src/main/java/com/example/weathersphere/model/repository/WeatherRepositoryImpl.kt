@@ -1,7 +1,6 @@
 package com.example.weathersphere.model.repository
 
 import android.util.Log
-import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherResponse
@@ -17,14 +16,14 @@ class WeatherRepositoryImpl private constructor(
     private val localDataSource: WeatherLocalDataSource
 ) : WeatherRepository {
 
-    override suspend fun getWeather():Flow<WeatherResponse> {
-            return localDataSource.getWeather()
+    override suspend fun getWeather():Flow<WeatherResponse?> {
+        return localDataSource.getWeather()
     }
 
-    override suspend fun refreshWeather(latLng: LatLng) {
+    override suspend fun refreshWeather(latLng: LatLng, lang: String) {
         withContext(Dispatchers.IO) {
             runCatching {
-                val response = remoteDataSource.getWeather(latLng)
+                val response = remoteDataSource.getWeather(latLng, lang)
                 Log.d(TAG, "refreshWeather: ${response.body()}")
                 if (response.isSuccessful) {
                     val weatherResponse = response.body()

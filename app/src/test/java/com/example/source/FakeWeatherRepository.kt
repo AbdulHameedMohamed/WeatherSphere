@@ -52,7 +52,7 @@ class FakeWeatherRepository(private val places: MutableList<Place> = mutableList
         TODO("Not yet implemented")
     }
 
-    override suspend fun refreshWeather(latLng: LatLng) {
+    override suspend fun refreshWeather(latLng: LatLng, lang: String) {
         TODO("Not yet implemented")
     }
 }

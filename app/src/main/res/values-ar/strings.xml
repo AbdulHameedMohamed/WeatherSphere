@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">الطقس</string>
+    <string name="location_permission_rationale">نحتاج إلى الوصول إلى موقعك لاسترداد بيانات الطقس.</string>
+    <string name="choose_location">الموقع:</string>
+    <string name="gps">GPS</string>
+    <string name="map">الخريطة</string>
+    <string name="save">حفظ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="city">العبور</string>
+    <string name="favourite">المفضلة</string>
+    <string name="sunny_day">يوم مشمس</string>
+    <string name="day_degree">23/13°م</string>
+    <string name="today">اليوم</string>
+    <string name="tomorrow">غدًا</string>
+    <string name="now">الآن</string>
+    <string name="home">الرئيسية</string>
+    <string name="alert">تنبيه</string>
+    <string name="setting">الإعدادات</string>
+    <string name="time">9:09 ص</string>
+    <string name="date">9 سبتمبر 2023</string>
+    <string name="notification">إشعار</string>
+    <string name="add_alert">إضافة تنبيه</string>
+    <string name="add_alarm">إضافة منبه</string>
+    <string name="weather_alarm">تنبيه الطقس</string>
+    <string name="location">الموقع</string>
+    <string name="meter_second">متر/الثانية</string>
+    <string name="mile_hour">ميل/الساعة</string>
+    <string name="language">اللغة</string>
+    <string name="english">الإنجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="enable">تمكين</string>
+    <string name="disable">تعطيل</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="temperature">درجة الحرارة</string>
+    <string name="celsius">درجة مئوية</string>
+    <string name="kelvin">كلفن</string>
+    <string name="fahrenheit">فهرنهايت</string>
+    <string name="hpa">هبا</string>
+    <string name="percentage">%</string>
+    <string name="k">K</string>
+    <string name="f">F</string>
+    <string name="c">C</string>
+    <string name="m">م</string>
+</resources>

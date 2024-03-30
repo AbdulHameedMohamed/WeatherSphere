@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.Context
 import pub.devrel.easypermissions.EasyPermissions
 
-private const val RC_NOTIFICATION_PERMISSION = 123
+const val RC_NOTIFICATION_PERMISSION = 123
 fun checkNotificationPermission(context: Context) =
     EasyPermissions.hasPermissions(
         context,

@@ -90,3 +90,40 @@ fun formatHourMinuteToString(hour: Int, minute: Int): String {
     val dateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
     return dateFormat.format(calendar.time)
 }
+
+
+fun setIcon(id: String, iv: ImageView){
+    when (id) {
+        "01d" -> iv.setImageResource(R.drawable.sun)
+        "02d" -> iv.setImageResource(R.drawable._02d)
+        "03d" -> iv.setImageResource(R.drawable._03d)
+        "04d" -> iv.setImageResource(R.drawable._04n)
+        "09d" -> iv.setImageResource(R.drawable._09n)
+        "10d" -> iv.setImageResource(R.drawable._10d)
+        "11d" -> iv.setImageResource(R.drawable._11d)
+        "13d" -> iv.setImageResource(R.drawable._13d)
+        "50d" -> iv.setImageResource(R.drawable._50d)
+        "01n" -> iv.setImageResource(R.drawable._01n)
+        "02n" -> iv.setImageResource(R.drawable._02n)
+        "03n" -> iv.setImageResource(R.drawable._03d)
+        "04n" -> iv.setImageResource(R.drawable._04n)
+        "09n" -> iv.setImageResource(R.drawable._09n)
+        "10n" -> iv.setImageResource(R.drawable._10n)
+        "11n" -> iv.setImageResource(R.drawable._11d)
+        "13n" -> iv.setImageResource(R.drawable._13d)
+        "50n" -> iv.setImageResource(R.drawable._50d)
+        else -> iv.setImageResource(R.drawable._load)
+    }
+}
+
+fun fromUnixToString(time: Int, lang: String): String {
+    val sdf = SimpleDateFormat("dd MMM yyyy", Locale(lang))
+    val date = Date(time * 1000L)
+    return sdf.format(date).uppercase(Locale.ROOT)
+}
+
+fun fromUnixToStringTime(time: Int, lang: String): String {
+    val sdf = SimpleDateFormat("hh:mm a", Locale(lang))
+    val date = Date(time * 1000L)
+    return sdf.format(date).uppercase(Locale.ROOT)
+}

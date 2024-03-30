@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/alert"
-        android:textColor="@color/text_color"
+        android:textColor="@color/textColor"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,12 +36,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
-        android:backgroundTint="@color/text_color"
+        android:backgroundTint="@color/textColor"
         android:contentDescription="@string/add_alert"
         android:src="@drawable/alert_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/second_color_yellow"
-        app:tint="@color/second_color_yellow" />
+        app:rippleColor="@color/purple_500"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
