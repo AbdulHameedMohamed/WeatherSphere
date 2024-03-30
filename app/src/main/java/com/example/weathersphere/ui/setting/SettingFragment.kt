@@ -85,10 +85,10 @@ class SettingFragment : Fragment() {
     }
 
     private fun showAnimations() {
-        binding.cvLocation.startAnimation(locationAnimation)
-        binding.cvLanguage.startAnimation(locationAnimation)
-        binding.cvWind.startAnimation(windAnimation)
-        binding.cvNotification.startAnimation(notificationAnimation)
+        binding.cvLocation.startAnimation(windAnimation)
+        binding.cvLanguage.startAnimation(notificationAnimation)
+        binding.cvWind.startAnimation(locationAnimation)
+        binding.cvNotification.startAnimation(locationAnimation)
         binding.cvTemp.startAnimation(temperatureAnimation)
     }
 

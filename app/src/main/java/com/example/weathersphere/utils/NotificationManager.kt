@@ -40,7 +40,7 @@ object NotificationManager {
             NotificationCompat.BigTextStyle()
                 .bigText("$description in $zoneName")
         )
-        builder.priority = NotificationCompat.PRIORITY_DEFAULT
+        builder.priority = NotificationCompat.PRIORITY_HIGH
         builder.setContentIntent(pendingIntent)
         builder.setAutoCancel(true)
 

@@ -6,15 +6,25 @@
     android:layout_height="match_parent"
     tools:context="ui.home.HomeFragment">
 
+    <com.github.matteobattilana.weather.WeatherView
+        android:id="@+id/wv_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:id="@+id/sv_home"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,23 +53,23 @@
                 android:elevation="10dp"
                 android:maxWidth="250dp"
                 android:maxHeight="100dp"
-                tools:text="Al-Obour"
-                android:textColor="@color/textColor"
+                android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Al-Obour" />
 
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                tools:text="15 March 2024"
-                android:textColor="@color/textColor"
+                android:textColor="@color/white"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@id/tv_location_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_location_name" />
+                app:layout_constraintTop_toBottomOf="@id/tv_location_name"
+                tools:text="15 March 2024" />
 
             <ImageView
                 android:id="@+id/iv_weather"
@@ -88,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:textColor="@color/textColor"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/sunRise"
                 app:layout_constraintStart_toEndOf="@id/sunRise" />
 
@@ -109,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:textColor="@color/textColor"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/sunSet"
                 app:layout_constraintStart_toEndOf="@id/sunSet" />
 
@@ -119,24 +129,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:elevation="10dp"
-                tools:text="28°"
-                android:textColor="@color/textColor"
+                android:textColor="@color/white"
                 android:textSize="35sp"
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/iv_weather"
                 app:layout_constraintStart_toEndOf="@id/iv_weather"
-                app:layout_constraintTop_toTopOf="@id/iv_weather" />
+                app:layout_constraintTop_toTopOf="@id/iv_weather"
+                tools:text="28°" />
 
             <TextView
                 android:id="@+id/tv_weather_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-10dp"
-                tools:text="Sunny Day"
                 android:textSize="16sp"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@id/tv_current_degree"
-                app:layout_constraintTop_toBottomOf="@id/tv_current_degree" />
+                app:layout_constraintTop_toBottomOf="@id/tv_current_degree"
+                tools:text="Sunny Day" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_details"
@@ -171,23 +182,23 @@
                         android:id="@+id/tv_dynamic_pressure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="1000 hpa"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@id/iv_pressure"
                         app:layout_constraintStart_toStartOf="@id/iv_pressure"
-                        app:layout_constraintTop_toBottomOf="@id/iv_pressure" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_pressure"
+                        tools:text="1000 hpa" />
 
                     <TextView
                         android:id="@+id/tv_pressure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Pressure"
                         android:textColor="@color/textColor"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="@id/iv_pressure"
                         app:layout_constraintStart_toStartOf="@id/iv_pressure"
-                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_pressure" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_pressure"
+                        tools:text="Pressure" />
 
                     <ImageView
                         android:id="@+id/iv_humidity"
@@ -203,23 +214,23 @@
                         android:id="@+id/tv_dynamic_humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="77%"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@id/iv_humidity"
                         app:layout_constraintStart_toStartOf="@id/iv_humidity"
-                        app:layout_constraintTop_toBottomOf="@id/iv_humidity" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_humidity"
+                        tools:text="77%" />
 
                     <TextView
                         android:id="@+id/tv_humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Humidity"
                         android:textColor="@color/textColor"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="@id/tv_dynamic_humidity"
                         app:layout_constraintStart_toStartOf="@id/tv_dynamic_humidity"
-                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_humidity" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_humidity"
+                        tools:text="Humidity" />
 
 
                     <ImageView
@@ -236,23 +247,23 @@
                         android:id="@+id/tv_dynamic_wind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="2 m/s"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@id/iv_wind"
                         app:layout_constraintStart_toStartOf="@id/iv_wind"
-                        app:layout_constraintTop_toBottomOf="@id/iv_wind" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_wind"
+                        tools:text="2 m/s" />
 
                     <TextView
                         android:id="@+id/tv_wind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Wind"
                         android:textColor="@color/textColor"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="@id/tv_dynamic_wind"
                         app:layout_constraintStart_toStartOf="@id/tv_dynamic_wind"
-                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_wind" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_wind"
+                        tools:text="Wind" />
 
                     <ImageView
                         android:id="@+id/iv_cloud"
@@ -267,23 +278,23 @@
                         android:id="@+id/tv_dynamic_cloud"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="0%"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@id/iv_cloud"
                         app:layout_constraintStart_toStartOf="@id/iv_cloud"
-                        app:layout_constraintTop_toBottomOf="@id/iv_cloud" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_cloud"
+                        tools:text="0%" />
 
                     <TextView
                         android:id="@+id/tv_cloud"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Cloud"
                         android:textColor="@color/textColor"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="@id/tv_dynamic_cloud"
                         app:layout_constraintStart_toStartOf="@id/tv_dynamic_cloud"
-                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_cloud" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_cloud"
+                        tools:text="Cloud" />
 
                     <ImageView
                         android:id="@+id/iv_violet"
@@ -298,23 +309,23 @@
                         android:id="@+id/tv_dynamic_violet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="0.0"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@id/iv_violet"
                         app:layout_constraintStart_toStartOf="@id/iv_violet"
-                        app:layout_constraintTop_toBottomOf="@id/iv_violet" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_violet"
+                        tools:text="0.0" />
 
                     <TextView
                         android:id="@+id/tv_violet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Ultra Violet"
                         android:textColor="@color/textColor"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="@id/tv_dynamic_violet"
                         app:layout_constraintStart_toStartOf="@id/tv_dynamic_violet"
-                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_violet" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_violet"
+                        tools:text="Ultra Violet" />
 
 
                     <ImageView
@@ -330,23 +341,23 @@
                         android:id="@+id/tv_dynamic_visibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="6000 m"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@id/iv_visibility"
                         app:layout_constraintStart_toStartOf="@id/iv_visibility"
-                        app:layout_constraintTop_toBottomOf="@id/iv_visibility" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_visibility"
+                        tools:text="6000 m" />
 
                     <TextView
                         android:id="@+id/tv_visibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Visibility"
                         android:textColor="@color/textColor"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="@id/tv_dynamic_visibility"
                         app:layout_constraintStart_toStartOf="@id/tv_dynamic_visibility"
-                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_visibility" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_dynamic_visibility"
+                        tools:text="Visibility" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -380,13 +391,13 @@
         android:id="@+id/lv_loading"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:backgroundTint="@android:color/transparent"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        android:backgroundTint="@android:color/transparent"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/animation_loading" />
 
