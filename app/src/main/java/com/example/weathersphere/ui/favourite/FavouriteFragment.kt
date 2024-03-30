@@ -18,9 +18,9 @@ import com.example.weathersphere.R
 import com.example.weathersphere.databinding.FragmentFavouriteBinding
 import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.local.DatabaseProvider
-import com.example.weathersphere.model.local.WeatherLocalDataSource
+import com.example.weathersphere.model.local.WeatherLocalDataSourceImpl
 import com.example.weathersphere.model.remote.RetrofitClient
-import com.example.weathersphere.model.remote.WeatherRemoteDataSource
+import com.example.weathersphere.model.remote.WeatherRemoteDataSourceImpl
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.viewmodel.FavouriteViewModel
 import com.example.weathersphere.viewmodel.HomeViewModel
@@ -111,9 +111,9 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
+        val productsApi = WeatherRemoteDataSourceImpl(RetrofitClient.apiService)
         val productDao =
-            WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
+            WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(requireContext()).weatherDao)
         val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
 
         val factory = FavouriteViewModel.Factory(repository)

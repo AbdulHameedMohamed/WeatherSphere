@@ -24,11 +24,9 @@ class WeatherRepositoryImpl private constructor(
         withContext(Dispatchers.IO) {
             runCatching {
                 val response = remoteDataSource.getWeather(latLng, lang)
-                Log.d(TAG, "refreshWeather: ${response.body()}")
                 if (response.isSuccessful) {
                     val weatherResponse = response.body()
                     if (weatherResponse != null) {
-                        Log.d(TAG, "refreshWeather: $weatherResponse")
                         localDataSource.insertWeather(weatherResponse)
                     }
                 }

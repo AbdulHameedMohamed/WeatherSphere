@@ -40,12 +40,10 @@ class HomeViewModel(
     }
 
     fun setSelectedLocation(location: LatLng) {
-        Log.d(TAG, "setSelectedLocation: $location")
         _selectedLocation.value = location
     }
 
     fun getWeather(latLng: LatLng, lang: String) = viewModelScope.launch {
-        Log.d(TAG, "getWeather: ${latLng.latitude}")
         repository.refreshWeather(latLng, lang)
     }
 

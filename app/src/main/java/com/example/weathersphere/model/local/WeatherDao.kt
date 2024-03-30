@@ -14,7 +14,7 @@ interface WeatherDao {
     fun insert(weather: WeatherResponse)
 
     @Delete
-    fun deleteThisWeather(weather: WeatherResponse)
+    fun deleteWeather(weather: WeatherResponse)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaceToFavourite(place: Place)

@@ -105,10 +105,21 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("app.cash.turbine:turbine:1.0.0")
+    testImplementation("androidx.test:core:1.5.0")
 
     //Work Manager
     implementation("androidx.work:work-runtime:2.9.0")
 
     // Weather Animation
     implementation("com.github.MatteoBattilana:WeatherView:3.0.0")
+
+    // hamcrest
+    testImplementation("org.hamcrest:hamcrest:2.2")
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
+
 }

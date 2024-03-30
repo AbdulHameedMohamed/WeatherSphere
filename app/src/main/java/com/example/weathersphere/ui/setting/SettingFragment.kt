@@ -17,9 +17,9 @@ import com.example.weathersphere.databinding.FragmentSettingBinding
 import com.example.weathersphere.model.datastore.WeatherDataStore
 import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.local.DatabaseProvider
-import com.example.weathersphere.model.local.WeatherLocalDataSource
+import com.example.weathersphere.model.local.WeatherLocalDataSourceImpl
 import com.example.weathersphere.model.remote.RetrofitClient
-import com.example.weathersphere.model.remote.WeatherRemoteDataSource
+import com.example.weathersphere.model.remote.WeatherRemoteDataSourceImpl
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.utils.changeLanguageLocaleTo
 import com.example.weathersphere.utils.showToast
@@ -59,9 +59,9 @@ class SettingFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        val weatherApi = WeatherRemoteDataSource(RetrofitClient.apiService)
+        val weatherApi = WeatherRemoteDataSourceImpl(RetrofitClient.apiService)
         val productDao =
-            WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
+            WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(requireContext()).weatherDao)
         val repository = WeatherRepositoryImpl.getInstance(weatherApi, productDao)
         val viewModelFactory = HomeViewModel.Factory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]

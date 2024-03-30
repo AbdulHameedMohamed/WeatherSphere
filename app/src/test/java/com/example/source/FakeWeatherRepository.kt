@@ -7,6 +7,7 @@ import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.repository.WeatherRepository
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 
 class FakeWeatherRepository(private val places: MutableList<Place> = mutableListOf(),
@@ -49,10 +50,12 @@ class FakeWeatherRepository(private val places: MutableList<Place> = mutableList
     }
 
     override suspend fun getWeather(): Flow<WeatherResponse> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(weatherResponse) // Emit the fake weather response
+        }
     }
 
     override suspend fun refreshWeather(latLng: LatLng, lang: String) {
-        TODO("Not yet implemented")
+        // Do nothing for now in the fake implementation
     }
 }

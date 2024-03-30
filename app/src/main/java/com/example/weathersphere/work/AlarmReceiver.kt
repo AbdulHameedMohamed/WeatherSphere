@@ -18,9 +18,9 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.weathersphere.R
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.local.DatabaseProvider
-import com.example.weathersphere.model.local.WeatherLocalDataSource
+import com.example.weathersphere.model.local.WeatherLocalDataSourceImpl
 import com.example.weathersphere.model.remote.RetrofitClient
-import com.example.weathersphere.model.remote.WeatherRemoteDataSource
+import com.example.weathersphere.model.remote.WeatherRemoteDataSourceImpl
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.utils.NetworkManager
 import com.example.weathersphere.utils.NotificationManager
@@ -45,7 +45,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                WeatherLocalDataSource(DatabaseProvider.getDatabase(context).weatherDao).deleteAlarm(alarm)
+                WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(context).weatherDao).deleteAlarm(alarm)
 
                 val mes = getAlertMessageFromApi(context, alarm)
 
@@ -150,7 +150,7 @@ class AlarmReceiver : BroadcastReceiver() {
         var message = ""
         try {
             if (NetworkManager.checkConnection(context)) {
-                val weatherResponse = WeatherRemoteDataSource(RetrofitClient.apiService)
+                val weatherResponse = WeatherRemoteDataSourceImpl(RetrofitClient.apiService)
                     .getWeather(LatLng(weatherAlarm.latitude, weatherAlarm.longitude), "en")
 
                 if (weatherResponse.isSuccessful)

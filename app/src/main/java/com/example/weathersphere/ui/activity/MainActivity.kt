@@ -8,9 +8,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.ActivityMainBinding
 import com.example.weathersphere.model.local.DatabaseProvider
-import com.example.weathersphere.model.local.WeatherLocalDataSource
+import com.example.weathersphere.model.local.WeatherLocalDataSourceImpl
 import com.example.weathersphere.model.remote.RetrofitClient
-import com.example.weathersphere.model.remote.WeatherRemoteDataSource
+import com.example.weathersphere.model.remote.WeatherRemoteDataSourceImpl
 import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.viewmodel.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,9 +33,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
+        val productsApi = WeatherRemoteDataSourceImpl(RetrofitClient.apiService)
         val productDao =
-            WeatherLocalDataSource(DatabaseProvider.getDatabase(this).weatherDao)
+            WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(this).weatherDao)
         val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
         val viewModelFactory = HomeViewModel.Factory(repository)
         homeViewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]

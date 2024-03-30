@@ -6,9 +6,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.local.DatabaseProvider
-import com.example.weathersphere.model.local.WeatherLocalDataSource
+import com.example.weathersphere.model.local.WeatherLocalDataSourceImpl
 import com.example.weathersphere.model.remote.RetrofitClient
-import com.example.weathersphere.model.remote.WeatherRemoteDataSource
+import com.example.weathersphere.model.remote.WeatherRemoteDataSourceImpl
 import com.example.weathersphere.model.repository.WeatherRepository
 import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.utils.Constants
@@ -38,8 +38,8 @@ class WeatherWorker(private val context: Context, params: WorkerParameters) : Co
     }
 
     private fun provideRepository(): WeatherRepository {
-        val weatherApi = WeatherRemoteDataSource(RetrofitClient.apiService)
-        val productDao = WeatherLocalDataSource(DatabaseProvider.getDatabase(context).weatherDao)
+        val weatherApi = WeatherRemoteDataSourceImpl(RetrofitClient.apiService)
+        val productDao = WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(context).weatherDao)
         return WeatherRepositoryImpl.getInstance(weatherApi, productDao)
     }
 

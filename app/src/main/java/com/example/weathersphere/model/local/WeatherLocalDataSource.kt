@@ -1,42 +1,21 @@
 package com.example.weathersphere.model.local
 
-import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.Place
+import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
-class WeatherLocalDataSource(private val weatherDao: WeatherDao) {
-    fun getWeather(): Flow<WeatherResponse?> {
-        return weatherDao.getWeather()
-    }
+interface WeatherLocalDataSource {
+    fun getWeather(): Flow<WeatherResponse?>
+    fun insertWeather(weatherResponse: WeatherResponse)
 
-    fun insertWeather(weatherResponse: WeatherResponse) {
-        weatherDao.insert(weatherResponse)
-    }
+    suspend fun insertPlaceToFavourite(place: Place)
 
-    fun deleteWeather(weatherResponse: WeatherResponse) {
-        weatherDao.insert(weatherResponse)
-    }
+    suspend fun deletePlaceFromFavourite(place: Place)
+    fun getAllFavourite(): Flow<List<Place>>
 
-    suspend fun insertPlaceToFavourite(place: Place) {
-        weatherDao.insertPlaceToFavourite(place)
-    }
-    suspend fun deletePlaceFromFavourite(place: Place) {
-        weatherDao.deletePlaceFromFavourite(place)
-    }
-    fun getAllFavourite():Flow<List<Place>> {
-        return weatherDao.getAllFavouritePlaces()
-    }
+    suspend fun insertAlarm(weatherAlarm: WeatherAlarm)
 
-    suspend fun insertAlarm(weatherAlarm: WeatherAlarm) {
-        weatherDao.insertAlarm(weatherAlarm)
-    }
-
-    suspend fun deleteAlarm(weatherAlarm: WeatherAlarm) {
-        weatherDao.deleteAlarm(weatherAlarm)
-    }
-
-    fun getAllAlarms(): Flow<List<WeatherAlarm>> {
-        return weatherDao.getAllAlarms()
-    }
+    suspend fun deleteAlarm(weatherAlarm: WeatherAlarm)
+    fun getAllAlarms(): Flow<List<WeatherAlarm>>
 }

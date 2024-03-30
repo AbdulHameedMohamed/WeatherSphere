@@ -29,10 +29,9 @@ import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.local.DatabaseProvider
-import com.example.weathersphere.model.local.WeatherLocalDataSource
+import com.example.weathersphere.model.local.WeatherLocalDataSourceImpl
 import com.example.weathersphere.model.remote.RetrofitClient
-import com.example.weathersphere.model.remote.WeatherRemoteDataSource
-import com.example.weathersphere.ui.home.HomeFragment
+import com.example.weathersphere.model.remote.WeatherRemoteDataSourceImpl
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.utils.NotificationManager
 import com.example.weathersphere.utils.RC_NOTIFICATION_PERMISSION
@@ -277,9 +276,9 @@ class AlertFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun setupViewModel() {
-        val productsApi = WeatherRemoteDataSource(RetrofitClient.apiService)
+        val productsApi = WeatherRemoteDataSourceImpl(RetrofitClient.apiService)
         val productDao =
-            WeatherLocalDataSource(DatabaseProvider.getDatabase(requireContext()).weatherDao)
+            WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(requireContext()).weatherDao)
         val repository = WeatherRepositoryImpl.getInstance(productsApi, productDao)
         val viewModelFactory =
             AlertViewModel.Factory(

@@ -46,8 +46,6 @@ class FavouriteViewModelTest {
         Assert.assertTrue(result.contains(place1))
     }
 
-
-
     @Test
     fun deletePlaceFromFavTest() = runBlocking{
         //when
