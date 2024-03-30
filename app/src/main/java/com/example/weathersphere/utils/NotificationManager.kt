@@ -1,5 +1,6 @@
 package com.example.weathersphere.utils
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,6 +9,8 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.example.weathersphere.ui.activity.MainActivity
 import com.example.weathersphere.R
+import com.example.weathersphere.model.data.WeatherResponse
+import com.example.weathersphere.work.WeatherWorker
 
 object NotificationManager {
 
@@ -15,7 +18,6 @@ object NotificationManager {
 
     fun createNotificationChannel(context: Context) {
         if (!channelIsCreated) {
-            // Create the NotificationChannel.
             val name = Constants.CHANNEL_NAME
             val descriptionText = Constants.CHANNEL_DESCRIPTION
             val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -32,7 +34,7 @@ object NotificationManager {
         val pendingIntent = createPendingIntent(context)
         val builder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
         builder.setSmallIcon(R.drawable.ic_notify)
-        builder.setContentTitle("NOAA WEATHER")
+        builder.setContentTitle(context.getString(R.string.weather))
         builder.setContentText("$description in $zoneName")
         builder.setStyle(
             NotificationCompat.BigTextStyle()
@@ -43,6 +45,24 @@ object NotificationManager {
         builder.setAutoCancel(true)
 
         return builder
+    }
+
+    fun buildNotification(context: Context, weather: WeatherResponse): Notification {
+        val notificationContent = """"Good Morning
+            |Temperature Today : ${weather.daily[0].temp}
+            |Humidity  ${weather.current.humidity}
+            |Alert: ${weather.alerts?.get(0)?.description}
+        """.trimMargin()
+
+        val notificationBuilder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notify)
+            .setContentTitle(context.getString(R.string.notification_title))
+            .setContentText(notificationContent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(createPendingIntent(context))
+            .setAutoCancel(true)
+
+        return notificationBuilder.build()
     }
 
     private fun createPendingIntent(context: Context): PendingIntent {

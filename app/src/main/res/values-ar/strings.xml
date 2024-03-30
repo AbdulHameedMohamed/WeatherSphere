@@ -23,6 +23,7 @@
     <string name="add_alert">إضافة تنبيه</string>
     <string name="add_alarm">إضافة منبه</string>
     <string name="weather_alarm">تنبيه الطقس</string>
+    <string name="weather">الطقس</string>
     <string name="location">الموقع</string>
     <string name="meter_second">متر/الثانية</string>
     <string name="mile_hour">ميل/الساعة</string>
@@ -42,4 +43,5 @@
     <string name="f">F</string>
     <string name="c">C</string>
     <string name="m">م</string>
+    <string name="notification_title">احوال الطقس اليوم</string>
 </resources>

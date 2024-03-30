@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,8 @@ import com.example.weathersphere.model.remote.RetrofitClient
 import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.viewmodel.FavouriteViewModel
+import com.example.weathersphere.viewmodel.HomeViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -29,6 +33,7 @@ class FavouriteFragment : Fragment() {
     private lateinit var binding: FragmentFavouriteBinding
     lateinit var favouriteAdapter: FavouriteAdapter
     lateinit var favouriteViewModel: FavouriteViewModel
+    private val viewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,6 +102,10 @@ class FavouriteFragment : Fragment() {
 
         favouriteAdapter = FavouriteAdapter {
             Toast.makeText(requireContext(), it.cityName, Toast.LENGTH_SHORT).show()
+            viewModel.setSelectedLocation(LatLng(it.latitude, it.longitude))
+            val action =
+                FavouriteFragmentDirections.actionFavouriteFragmentToHomeFragment()
+            requireView().findNavController().navigate(action)
         }
         binding.rvFavourite.adapter = favouriteAdapter
     }

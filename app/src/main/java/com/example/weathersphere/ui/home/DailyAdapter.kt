@@ -1,6 +1,7 @@
 package com.example.weathersphere.ui.home
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -44,28 +45,21 @@ class DailyAdapter(
             }
         }
 
-        fun onBind(day: Daily, weatherDataStore: WeatherDataStore, lifecycleScope: LifecycleCoroutineScope) {
+        fun onBind(
+            day: Daily,
+            weatherDataStore: WeatherDataStore,
+            lifecycleScope: LifecycleCoroutineScope
+        ) {
             binding.apply {
-                when (adapterPosition) {
-                    0 -> {
-                        tvDayName.text = binding.root.context.getString(R.string.today)
-                    }
 
-                    1 -> {
-                        tvDayName.text = binding.root.context.getString(R.string.tomorrow)
-                    }
-
-                    else -> {
-                        lifecycleScope.launch {
-                            weatherDataStore.getLanguage.collect { language ->
-                                if (language == Constants.ARABIC)
-                                    tvDayName.text =
-                                        formatDayOfWeek(day.dt, binding.tvDayName.context, "ar")
-                                else
-                                    tvDayName.text =
-                                        formatDayOfWeek(day.dt, binding.tvDayName.context, "en")
-                            }
-                        }
+                lifecycleScope.launch {
+                    weatherDataStore.getLanguage.collect { language ->
+                        if (language == Constants.ARABIC)
+                            tvDayName.text =
+                                formatDayOfWeek(day.dt, binding.tvDayName.context, "ar")
+                        else
+                            tvDayName.text =
+                                formatDayOfWeek(day.dt, binding.tvDayName.context, "en")
                     }
                 }
 

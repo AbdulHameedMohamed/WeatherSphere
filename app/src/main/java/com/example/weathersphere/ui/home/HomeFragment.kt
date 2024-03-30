@@ -73,7 +73,14 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
         observeWeather()
 
+        setListeners()
         return binding.root
+    }
+
+    private fun setListeners() {
+        binding.btnMyLocation.setOnClickListener {
+            requestLocationPermission()
+        }
     }
 
     private fun animateWeather() {
@@ -106,11 +113,11 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                         }
 
                         is WeatherResult.Success -> {
-                            binding.svHome.visibility = View.VISIBLE
-                            binding.lvLoading.visibility = View.GONE
-
-                            if (status.data != null)
+                            if (status.data != null) {
+                                binding.svHome.visibility = View.VISIBLE
+                                binding.lvLoading.visibility = View.GONE
                                 bindWeatherData(status.data)
+                            }
                             else showInitialSettingDialog()
                         }
 

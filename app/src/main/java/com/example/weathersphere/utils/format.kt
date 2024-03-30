@@ -13,19 +13,21 @@ import java.util.Date
 import java.util.Locale
 
 fun formatDayOfWeek(timestamp: Int, context: Context, lang: String): String {
-    val sdf = SimpleDateFormat("EEE", Locale(lang))
+    val sdf = SimpleDateFormat("EEEE", Locale(lang))
     val calendar: Calendar = Calendar.getInstance()
     val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
     calendar.timeInMillis = timestamp.toLong() * 1000
     return when (calendar.get(Calendar.DAY_OF_YEAR)) {
         currentDay -> context.getString(R.string.today)
         currentDay + 1 -> context.getString(R.string.tomorrow)
-        else -> sdf.format(calendar.time).uppercase(Locale.ROOT)
+        else -> {
+            val dayOfWeek = sdf.format(calendar.time)
+            dayOfWeek.substring(0, 1).uppercase(Locale.getDefault()) + dayOfWeek.substring(1)
+        }
     }
 }
 
-fun ImageView.setIconFromApi(iconId: String){
-
+fun ImageView.setIconFromApi(iconId: String) {
     val urlString = "https://openweathermap.org/img/wn/$iconId@2x.png"
     Glide.with(this)
         .load(urlString)
@@ -50,6 +52,7 @@ fun formatTimestamp(timestamp: Long, lang: String): String {
     val date = Date(timestamp * 1000)
     return sdf.format(date)
 }
+
 fun formatMillisToDateTimeString(dateTimeInMillis: Long, pattern: String): String {
     val resultFormat = SimpleDateFormat(pattern, Locale.getDefault())
     val date = Date(dateTimeInMillis)
@@ -92,7 +95,7 @@ fun formatHourMinuteToString(hour: Int, minute: Int): String {
 }
 
 
-fun setIcon(id: String, iv: ImageView){
+fun setIcon(id: String, iv: ImageView) {
     when (id) {
         "01d" -> iv.setImageResource(R.drawable.sun)
         "02d" -> iv.setImageResource(R.drawable._02d)

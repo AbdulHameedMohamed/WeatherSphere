@@ -22,6 +22,7 @@
     <string name="add_alert">Add Alert</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="weather_alarm">Weather Alarm</string>
+    <string name="weather">Weather</string>
     <string name="location">Location</string>
     <string name="meter_second">Meter/Second</string>
     <string name="mile_hour">Mile/Hour</string>

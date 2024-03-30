@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weathersphere.R
 import com.example.weathersphere.databinding.ItemHoursBinding
 import com.example.weathersphere.model.data.Hourly
 import com.example.weathersphere.model.datastore.WeatherDataStore
@@ -13,9 +14,7 @@ import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.utils.formatDateStamp
 import com.example.weathersphere.utils.formatTimestamp
 import com.example.weathersphere.utils.setIconFromApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 class HourlyAdapter(
     private val weatherDataStore: WeatherDataStore,
@@ -64,15 +63,17 @@ class HourlyAdapter(
                     weatherDataStore.getTemperature.collect { temperature ->
                         when (temperature) {
                             Constants.KELVIN -> tvDegree.text = String.format(
-                                "%.0f°C", hourly.temp + 273.15
+                                "%.0f°${tvDegree.context.getString(R.string.k)}",
+                                hourly.temp + 273.15
                             )
 
                             Constants.FAHRENHEIT -> tvDegree.text = String.format(
-                                "%.0f°C", hourly.temp * 9 / 5 + 32
+                                "%.0f°${tvDegree.context.getString(R.string.f)}",
+                                hourly.temp * 9 / 5 + 32
                             )
 
                             else -> tvDegree.text = String.format(
-                                "%.0f°C", hourly.temp
+                                "%.0f°${tvDegree.context.getString(R.string.f)}", hourly.temp
                             )
                         }
                     }
