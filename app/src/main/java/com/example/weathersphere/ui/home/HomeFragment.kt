@@ -118,8 +118,9 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                             if (status.data != null) {
                                 binding.svHome.visibility = View.VISIBLE
                                 binding.lvLoading.visibility = View.GONE
-                                setWeatherAnimation(status.data.current.weather)
-                                bindWeatherData(status.data)
+                                val weather = status.data
+                                setWeatherAnimation(weather.current.weather)
+                                bindWeatherData(weather)
                             } else showInitialSettingDialog()
                         }
 
@@ -255,7 +256,6 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private fun setWeatherAnimation(weatherConditions: List<Weather>) {
 
-        Log.d(TAG, "setWeatherAnimation: $weatherConditions")
         Log.d(TAG, "setWeatherAnimation: $${weatherConditions[0].main}")
         Log.d(TAG, "setWeatherAnimation: $${weatherConditions[0].description}")
         val isRainy = weatherConditions.any { it.main.lowercase() == "rain" }

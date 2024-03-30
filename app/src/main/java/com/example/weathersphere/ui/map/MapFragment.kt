@@ -8,18 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.weathersphere.ui.activity.MainActivity
 import com.example.weathersphere.R
 import com.example.weathersphere.databinding.FragmentMapBinding
-import com.example.weathersphere.model.repository.WeatherRepositoryImpl
 import com.example.weathersphere.model.data.Place
-import com.example.weathersphere.model.local.DatabaseProvider
-import com.example.weathersphere.model.local.WeatherLocalDataSource
-import com.example.weathersphere.model.remote.RetrofitClient
-import com.example.weathersphere.model.remote.WeatherRemoteDataSource
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.viewmodel.HomeViewModel
 import com.google.android.gms.maps.GoogleMap
@@ -28,8 +21,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.Locale
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -109,9 +100,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun getCityName(latLng: LatLng): String {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
-        val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-        return if (addresses?.isNotEmpty() == true) addresses[0]?.locality
-            ?: "Unknown" else "Unknown"
+        val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+
+        var cityName = "UnKnown Location"
+        if (address != null && address.size!= 0&& address[0].locality != null) {
+            cityName = "${address[0].countryName} / ${address[0].locality}"
+        } else if (address != null) {
+            cityName = "${address[0].countryName} / ${address[0].adminArea}"
+        }
+
+        return cityName
     }
 
     private fun getMarkerLocation(): LatLng {
