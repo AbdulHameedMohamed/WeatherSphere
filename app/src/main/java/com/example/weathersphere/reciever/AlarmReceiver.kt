@@ -106,7 +106,11 @@ class AlarmReceiver : BroadcastReceiver() {
         val window = dialog.window
         window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        window?.setGravity(Gravity.TOP)
+        window?.setGravity(Gravity.CENTER)
+        val layoutParams = window?.attributes
+        layoutParams?.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams?.height = WindowManager.LayoutParams.WRAP_CONTENT
+        window?.attributes = layoutParams
 
         dialog.show()
 

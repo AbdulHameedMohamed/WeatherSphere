@@ -1,105 +1,106 @@
 package com.example.weathersphere.viewmodel
 
-import app.cash.turbine.test
 import com.example.source.FakeWeatherRepository
-import com.example.weathersphere.model.MainDispatcherRule
-import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherAlarm
-import com.example.weathersphere.model.repository.WeatherRepository
-import com.example.weathersphere.work.AlarmScheduler
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.manipulation.Ordering.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.example.source.FakeAlarmScheduler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.After
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AlertViewModelTest {
-    @OptIn(ExperimentalCoroutinesApi::class)
+
+    // Rule to run tasks synchronously
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val dummyAlarm1 = WeatherAlarm(
-        time = 1616995200000,
-        kind = "Kind 1",
-        latitude = 40.7128,
-        longitude = -74.0060,
-        zoneName = "Zone 1"
-    )
+    // Fake implementations
+    private lateinit var fakeAlarmScheduler: FakeAlarmScheduler
+    private lateinit var fakeRepository: FakeWeatherRepository
 
-    val dummyAlarm2 = WeatherAlarm(
-        time = 1617078000000,
-        kind = "Kind 2",
-        latitude = 34.0522,
-        longitude = -118.2437,
-        zoneName = "Zone 2"
-    )
+    // Subject under test
+    private lateinit var viewModel: AlertViewModel
 
-    val dummyAlarm3 = WeatherAlarm(
-        time = 1617160800000,
-        kind = "Kind 3",
-        latitude = 51.5074,
-        longitude = -0.1278,
-        zoneName = "Zone 3"
-    )
 
-    private lateinit var repository: WeatherRepository
-    private lateinit var alertViewModel: AlertViewModel
-    private val testDispatcher = StandardTestDispatcher()
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
 
     @Before
-    fun setUp() {
-        repository = FakeWeatherRepository()
-        //TODO InitViewModel
+    fun setup() {
+        setupFakeViewModel()
+
+        Dispatchers.setMain(StandardTestDispatcher())
+    }
+
+    private fun setupFakeViewModel() {
+        fakeAlarmScheduler = FakeAlarmScheduler()
+        fakeRepository = FakeWeatherRepository()
+        viewModel = AlertViewModel(fakeRepository, fakeAlarmScheduler)
     }
 
     @Test
-    fun addAlarm() = runBlocking{
-        //when
-        alertViewModel.insertAlarm(dummyAlarm1)
-        alertViewModel.getAllAlarms()
-        var result: List<WeatherAlarm> = listOf()
-        alertViewModel.alarmsStateFlow.test {
-            result = this.awaitItem()
-        }
+    fun `test creating alarm`() = runTest {
+        // Given
+        val alarm = WeatherAlarm(0, "Kind", 36.45, 85.65)
 
-        //then
-        Assert.assertTrue(result.contains(dummyAlarm1))
-    }
+        // When
+        viewModel.createAlarm(alarm)
 
-
-
-    @Test
-    fun deletePlaceFromFavTest() = runBlocking{
-        //when
-        alertViewModel.insertAlarm(dummyAlarm1)
-        alertViewModel.deleteAlarm(dummyAlarm1)
-        alertViewModel.getAllAlarms()
-        var result : List<WeatherAlarm> = listOf()
-        alertViewModel.alarmsStateFlow.test {
-            result = this.awaitItem()
-        }
-
-        //then
-        Assert.assertFalse(result.contains(dummyAlarm1))
+        // Then
+        assertThat(fakeAlarmScheduler.scheduledAlarms.size, equalTo(1))
+        assertThat(fakeAlarmScheduler.scheduledAlarms.first(), equalTo(alarm))
     }
 
     @Test
-    fun getAllPlacesTest()= runBlocking{
-        //when
-        alertViewModel.insertAlarm(dummyAlarm1)
-        alertViewModel.insertAlarm(dummyAlarm2)
-        alertViewModel.insertAlarm(dummyAlarm3)
-        alertViewModel.getAllAlarms()
+    fun `test deleting alarm`() = runTest {
+        // Given
+        val alarm = WeatherAlarm(0, "Kind", 36.45, 85.65)
+        viewModel.createAlarm(alarm)
 
-        var result: List<WeatherAlarm> = listOf()
-        alertViewModel.alarmsStateFlow.test {
-            result = this.awaitItem()
-        }
+        // When
+        viewModel.destroyAlarm(alarm)
 
-        //then
-        Assert.assertEquals(listOf(dummyAlarm1, dummyAlarm2, dummyAlarm3), result)
+        // Then
+        assertThat(fakeAlarmScheduler.scheduledAlarms.size, equalTo(0))
     }
+
+    @Test
+    fun `test getting all alarms`() = runTest {
+        // Given
+        val alarm1 = WeatherAlarm(0, "Kind 1", 36.45, 85.65)
+        val alarm2 = WeatherAlarm(1, "Kind 2", 85.63, 92.37)
+        viewModel.createAlarm(alarm1)
+        viewModel.createAlarm(alarm2)
+
+        viewModel.getAllAlarms()
+
+        // Wait for a short delay to allow getAllAlarms() to complete
+        delay(100)
+
+        // When
+        val alarms = viewModel.alarmsStateFlow.first()
+
+        // Then
+        assertThat(alarms.size, equalTo(2))
+        assertThat(alarms[0], equalTo(alarm1))
+        assertThat(alarms[1], equalTo(alarm2))
+    }
+
+
+
 }

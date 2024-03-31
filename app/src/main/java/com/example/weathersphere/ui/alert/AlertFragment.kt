@@ -43,7 +43,7 @@ import com.example.weathersphere.utils.requestNotificationPermission
 import com.example.weathersphere.utils.setLocationNameByGeoCoder
 import com.example.weathersphere.utils.showToast
 import com.example.weathersphere.viewmodel.AlertViewModel
-import com.example.weathersphere.work.AlarmScheduler
+import com.example.weathersphere.work.AlarmSchedulerImpl
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -291,7 +291,7 @@ class AlertFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         val viewModelFactory =
             AlertViewModel.Factory(
                 repository,
-                AlarmScheduler.getInstance(requireActivity().application)
+                AlarmSchedulerImpl.getInstance(requireActivity().application)
             )
         viewModel = ViewModelProvider(this, viewModelFactory)[AlertViewModel::class.java]
     }
@@ -329,8 +329,7 @@ class AlertFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
                 Snackbar.make(requireView(), "Alarm Deleted.... ", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
-                        viewModel.insertAlarm(weatherAlarm)
-                        viewModel.createAlarmScheduler(weatherAlarm)
+                        viewModel.createAlarm(weatherAlarm)
                     }
                     show()
                 }

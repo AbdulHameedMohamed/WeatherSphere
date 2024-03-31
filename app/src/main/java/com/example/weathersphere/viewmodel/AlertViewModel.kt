@@ -9,6 +9,7 @@ import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.repository.WeatherRepository
+import com.example.weathersphere.work.AlarmSchedulerImpl
 import com.example.weathersphere.work.AlarmScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,26 +55,26 @@ class AlertViewModel(
         createAlarmScheduler(weatherAlarm)
     }
 
-    fun insertAlarm(weatherAlarm: WeatherAlarm) =
+    private fun insertAlarm(weatherAlarm: WeatherAlarm) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertAlarm(weatherAlarm)
         }
 
-    fun createAlarmScheduler(weatherAlarm: WeatherAlarm) = alarmScheduler.createAlarm(weatherAlarm)
+    private fun createAlarmScheduler(weatherAlarm: WeatherAlarm) = alarmScheduler.createAlarm(weatherAlarm)
 
     fun destroyAlarm(weatherAlarm: WeatherAlarm) {
         deleteAlarm(weatherAlarm)
         cancelAlarmScheduler(weatherAlarm)
     }
 
-    fun deleteAlarm(weatherAlarm: WeatherAlarm) =
+    private fun deleteAlarm(weatherAlarm: WeatherAlarm) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAlarm(weatherAlarm)
         }
     private fun cancelAlarmScheduler(weatherAlarm: WeatherAlarm) = alarmScheduler.cancelAlarm(weatherAlarm)
 
     class Factory(
-        private val repository: WeatherRepositoryImpl,
+        private val repository: WeatherRepository,
         private val alarmScheduler: AlarmScheduler
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
