@@ -24,6 +24,8 @@ import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.utils.changeLanguageLocaleTo
 import com.example.weathersphere.utils.showToast
 import com.example.weathersphere.viewmodel.HomeViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SettingFragment : Fragment() {
@@ -53,7 +55,7 @@ class SettingFragment : Fragment() {
 
         cardsAnimation()
 
-        //setupRadioButtons()
+        setupRadioButtons()
 
         observeSettings()
     }
@@ -96,43 +98,32 @@ class SettingFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                weatherDataStore.getLocation.collect { location ->
-                    updateLocationRadioButton(location)
-                }
+                updateLocationRadioButton(weatherDataStore.getLocation.first())
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                weatherDataStore.getWindSpeed.collect { windSpeed ->
-                    updateWindSpeedRadioButton(windSpeed)
-                }
+                updateWindSpeedRadioButton(weatherDataStore.getWindSpeed.first())
+            }
+        }
+
+        binding.rgLanguage.clearCheck()
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                updateLanguageRadioButton(weatherDataStore.getLanguage.first())
+//            }
+//        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                updateNotificationRadioButton(weatherDataStore.isNotificationEnabled.first())
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                weatherDataStore.getLanguage.collect { language ->
-                    updateLanguageRadioButton(language)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                weatherDataStore.isNotificationEnabled.collect { notificationEnabled ->
-                    updateNotificationRadioButton(notificationEnabled)
-                }
-            }
-        }
-
-
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                weatherDataStore.getTemperature.collect { temperature ->
-                    updateTemperatureRadioButton(temperature)
-                }
+                updateTemperatureRadioButton(weatherDataStore.getTemperature.first())
             }
         }
     }
