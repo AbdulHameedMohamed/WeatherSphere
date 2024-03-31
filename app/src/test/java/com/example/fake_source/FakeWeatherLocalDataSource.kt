@@ -1,4 +1,4 @@
-package com.example.source
+package com.example.fake_source
 
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherAlarm
@@ -6,7 +6,6 @@ import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.local.WeatherLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
 
 class FakeWeatherLocalDataSource : WeatherLocalDataSource {
     private val weatherData = MutableStateFlow<WeatherResponse?>(null)

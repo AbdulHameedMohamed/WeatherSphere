@@ -1,4 +1,4 @@
-package com.example.weathersphere
+package com.example.weathersphere.model.local
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
@@ -7,10 +7,11 @@ import com.example.weathersphere.model.data.Current
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherAlarm
 import com.example.weathersphere.model.data.WeatherResponse
-import com.example.weathersphere.model.local.WeatherDao
-import com.example.weathersphere.model.local.WeatherDataBase
+import com.example.MainCoroutineRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
@@ -20,13 +21,14 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert
-
 @RunWith(JUnit4::class)
 @SmallTest
 class WeatherDaoTest {
+
     private lateinit var weatherDao: WeatherDao
     private lateinit var database: WeatherDataBase
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
@@ -45,31 +47,35 @@ class WeatherDaoTest {
     }
 
     @Test
-    fun insert_Favourite_and_check_it() = runBlocking {
-        //arrange
-        val favourate = Place(0, cityName = "cairo", latitude = 20.0, longitude = 30.0)
-        //act
-        weatherDao.insertPlaceToFavourite(favourate)
-        //assert
+    fun `insert_Favourite_and_check_it`() = runTest {
+        // Arrange
+        val favourite = Place(0, cityName = "Cairo", latitude = 20.0, longitude = 30.0)
+
+        // Act
+        weatherDao.insertPlaceToFavourite(favourite)
+
+        // Assert
         val result = weatherDao.getAllFavouritePlaces().first()
         assertThat(result.size, `is`(1))
     }
 
     @Test
-    fun getAllFavourite_insert_Favourite_and_check_the_size() = runBlocking {
-        //arrange
-        val favourite = Place(0, cityName = "cairo", latitude = 20.0, longitude = 30.0)
+    fun `getAllFavourite_insert_Favourite_and_check_the_size`() = runTest {
+        // Arrange
+        val favourite = Place(0, cityName = "Cairo", latitude = 20.0, longitude = 30.0)
         weatherDao.insertPlaceToFavourite(favourite)
-        //act
-        val favourites= weatherDao.getAllFavouritePlaces()
-        //assert
+
+        // Act
+        val favourites = weatherDao.getAllFavouritePlaces()
+
+        // Assert
         val result = favourites.first()
         assertThat(result.size, `is`(1))
     }
 
     @Test
-    fun testInsertAndGetWeather() = runBlocking {
-        // Create a dummy weather response
+    fun `testInsertAndGetWeather`() = mainCoroutineRule.runBlockingTest {
+        // Arrange
         val weatherResponse = WeatherResponse(
             0,
             Current(0, 0.0, 1, 0.0, 1, 1, 1, 1, 0.0, 0.0, 1, listOf(), 1, 0.0, 0.0),
@@ -82,18 +88,17 @@ class WeatherDaoTest {
             listOf()
         )
 
-        // Insert the weather response into the database
+        // Act
         weatherDao.insert(weatherResponse)
 
-        // Get the weather response from the database
+        // Assert
         val retrievedWeather = weatherDao.getWeather().first()
-
-        // Assert that the retrieved weather is the same as the inserted one
         assertThat(weatherResponse, `is`(retrievedWeather))
     }
 
     @Test
-    fun testInsertAlarm_insertsAlarmIntoDatabase() = runBlocking {
+    fun `testInsertAlarm_insertsAlarmIntoDatabase`() = runTest {
+        // Arrange
         val weatherAlarm = WeatherAlarm(
             time = 123456789L,
             kind = "test",
@@ -102,15 +107,17 @@ class WeatherDaoTest {
             zoneName = "test zone"
         )
 
+        // Act
         weatherDao.insertAlarm(weatherAlarm)
 
+        // Assert
         val alarms = weatherDao.getAllAlarms().first()
-
         Assert.assertTrue(alarms.contains(weatherAlarm))
     }
 
     @Test
-    fun testDeleteAlarm_removesAlarmFromDatabase() = runBlocking {
+    fun `testDeleteAlarm_removesAlarmFromDatabase`() = runTest {
+        // Arrange
         val weatherAlarm = WeatherAlarm(
             time = 123456789L,
             kind = "test",
@@ -118,17 +125,19 @@ class WeatherDaoTest {
             longitude = 0.0,
             zoneName = "test zone"
         )
-
         weatherDao.insertAlarm(weatherAlarm)
+
+        // Act
         weatherDao.deleteAlarm(weatherAlarm)
 
+        // Assert
         val alarms = weatherDao.getAllAlarms().first()
-
         Assert.assertFalse(alarms.contains(weatherAlarm))
     }
 
     @Test
-    fun testGetAllAlarms_returnsAllAlarmsFromDatabase() = runBlocking {
+    fun `testGetAllAlarms_returnsAllAlarmsFromDatabase`() = runTest {
+        // Arrange
         val alarm1 = WeatherAlarm(
             time = 123456789L,
             kind = "test",
@@ -143,14 +152,14 @@ class WeatherDaoTest {
             longitude = 1.0,
             zoneName = "test zone"
         )
-
         weatherDao.insertAlarm(alarm1)
         weatherDao.insertAlarm(alarm2)
 
+        // Act
         val alarms = weatherDao.getAllAlarms().first()
 
+        // Assert
         Assert.assertTrue(alarms.contains(alarm1))
         Assert.assertTrue(alarms.contains(alarm2))
     }
-
 }

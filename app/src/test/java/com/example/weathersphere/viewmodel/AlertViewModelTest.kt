@@ -1,18 +1,17 @@
 package com.example.weathersphere.viewmodel
 
-import com.example.source.FakeWeatherRepository
+import com.example.fake_source.FakeWeatherRepository
 import com.example.weathersphere.model.data.WeatherAlarm
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.source.FakeAlarmScheduler
+import com.example.fake_source.FakeAlarmScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain

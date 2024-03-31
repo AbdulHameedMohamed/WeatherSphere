@@ -1,4 +1,4 @@
-package com.example.source
+package com.example.fake_source
 
 import com.example.weathersphere.model.data.Place
 import com.example.weathersphere.model.data.WeatherAlarm

@@ -1,14 +1,13 @@
 package com.example.weathersphere.viewmodel
 
 import app.cash.turbine.test
-import com.example.source.FakeWeatherRepository
+import com.example.fake_source.FakeWeatherRepository
 import com.example.weathersphere.model.MainDispatcherRule
-import com.example.weathersphere.model.data.Current
 import com.example.weathersphere.model.data.Place
-import com.example.weathersphere.model.data.WeatherResponse
 import com.example.weathersphere.model.repository.WeatherRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -33,7 +32,7 @@ class FavouriteViewModelTest {
     }
 
     @Test
-    fun insertPlaceToFavTest() = runBlocking{
+    fun insertPlaceToFavTest() = runTest {
         //when
         favouriteViewModel.insertToFavourite(place1)
         favouriteViewModel.getAllFavouritePlaces()

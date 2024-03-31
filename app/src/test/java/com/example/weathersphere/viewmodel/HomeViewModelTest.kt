@@ -1,7 +1,7 @@
 package com.example.weathersphere.viewmodel
 
 import kotlinx.coroutines.launch
-import com.example.source.FakeWeatherRepository
+import com.example.fake_source.FakeWeatherRepository
 import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.Current
 import com.example.weathersphere.model.data.Place
