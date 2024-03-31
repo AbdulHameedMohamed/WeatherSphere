@@ -131,11 +131,19 @@ class AlertFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun observeStateFlow() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.alarmsStateFlow.collectLatest {
-                    adapter.submitList(it)
+                viewModel.alarmsStateFlow.collectLatest { alarms ->
+                    if (alarms.isEmpty()) {
+                        binding.lvNoFavourites.visibility = View.VISIBLE
+                        binding.rvAlerts.visibility = View.GONE
+                    } else {
+                        binding.lvNoFavourites.visibility = View.GONE
+                        binding.rvAlerts.visibility = View.VISIBLE
+                        adapter.submitList(alarms)
+                    }
                 }
             }
         }
+
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.weatherFlow.collectLatest {

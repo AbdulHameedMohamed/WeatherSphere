@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import com.example.weathersphere.model.data.WeatherAlarm
+import com.example.weathersphere.reciever.AlarmReceiver
 import com.example.weathersphere.utils.Constants
 
 class AlarmScheduler private constructor(private val application: Application) : AlarmSchedulerInterface {

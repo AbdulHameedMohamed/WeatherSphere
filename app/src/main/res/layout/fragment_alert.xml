@@ -44,4 +44,18 @@
         app:rippleColor="@color/purple_500"
         app:tint="@color/white" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_no_favourites"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:backgroundTint="@android:color/transparent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animation_no_data" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,9 +3,11 @@ package com.example.weathersphere.ui.home
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.location.Location
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -28,6 +30,7 @@ import com.example.weathersphere.model.datastore.WeatherDataStore
 import com.example.weathersphere.model.WeatherResult
 import com.example.weathersphere.model.data.Weather
 import com.example.weathersphere.model.data.WeatherResponse
+import com.example.weathersphere.reciever.NetworkChangeReceiver
 import com.example.weathersphere.utils.Constants
 import com.example.weathersphere.utils.changeLanguageLocaleTo
 import com.example.weathersphere.utils.fromUnixToString
@@ -35,6 +38,7 @@ import com.example.weathersphere.utils.fromUnixToStringTime
 import com.example.weathersphere.utils.getLanguageLocale
 import com.example.weathersphere.utils.setIcon
 import com.example.weathersphere.utils.setLocationNameByGeoCoder
+import com.example.weathersphere.utils.showToast
 import com.example.weathersphere.viewmodel.HomeViewModel
 import com.github.matteobattilana.weather.PrecipType
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -57,6 +61,9 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         WeatherDataStore(requireContext())
     }
     private val viewModel: HomeViewModel by activityViewModels()
+
+    private val networkChangeReceiver = NetworkChangeReceiver()
+    private var receiverRegistered = false
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 123
@@ -157,6 +164,21 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         super.onStart()
         if (getLanguageLocale().isBlank()) {
             changeLanguageLocaleTo(Locale.getDefault().language)
+        }
+
+        if (!receiverRegistered) {
+            val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+            requireActivity().registerReceiver(networkChangeReceiver, filter)
+            observeNetworkStatus()
+            receiverRegistered = true
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (receiverRegistered) {
+            requireActivity().unregisterReceiver(networkChangeReceiver)
+            receiverRegistered = false
         }
     }
 
@@ -300,8 +322,15 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 Log.d(TAG, "fetchLocationAndWeather: $location")
-                location?.let {
-                    viewModel.setSelectedLocation(LatLng(it.latitude, it.longitude))
+                if (location != null)
+                    viewModel.setSelectedLocation(LatLng(location.latitude, location.longitude))
+                else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Sry But You Need To Select Your Location From Map.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navigationToMapFragment()
                 }
             }
     }
@@ -351,10 +380,10 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             val checkedBtn = bindingInitialLayoutDialog.rgLocation.checkedRadioButtonId
 
             if (checkedBtn == bindingInitialLayoutDialog.radioGps.id) {
+                requestLocationPermission()
                 viewLifecycleOwner.lifecycleScope.launch {
                     weatherDataStore.setLocation(Constants.GPS)
                 }
-                requestLocationPermission()
             } else {
                 viewLifecycleOwner.lifecycleScope.launch {
                     weatherDataStore.setLocation(Constants.MAP)
@@ -370,5 +399,19 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun navigationToMapFragment() {
         val action = HomeFragmentDirections.actionHomeFragmentToMapFragment(Constants.HOME)
         findNavController().navigate(action)
+    }
+
+    private fun observeNetworkStatus() {
+        lifecycleScope.launch {
+            networkChangeReceiver.networkStatus.collect { isConnected ->
+                if (isConnected) {
+                    Log.d(TAG, "observeNetworkStatus: Online")
+                    requireContext().showToast("You Are Now Online:)")
+                } else {
+                    Log.d(TAG, "observeNetworkStatus: Offline")
+                    requireContext().showToast("Check Your Connection:(")
+                }
+            }
+        }
     }
 }

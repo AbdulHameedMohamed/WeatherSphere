@@ -55,8 +55,15 @@ class FavouriteFragment : Fragment() {
 
     private fun observeFavourites() {
         lifecycleScope.launch {
-            favouriteViewModel.favouritePlacesStateFlow.collectLatest {
-                favouriteAdapter.submitList(it)
+            favouriteViewModel.favouritePlacesStateFlow.collectLatest { favouritePlaces ->
+                if (favouritePlaces.isEmpty()) {
+                    binding.lvNoFavourites.visibility = View.VISIBLE
+                    binding.rvFavourite.visibility = View.GONE
+                } else {
+                    binding.lvNoFavourites.visibility = View.GONE
+                    binding.rvFavourite.visibility = View.VISIBLE
+                    favouriteAdapter.submitList(favouritePlaces)
+                }
             }
         }
     }

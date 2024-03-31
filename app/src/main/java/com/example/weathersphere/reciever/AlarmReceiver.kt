@@ -1,4 +1,4 @@
-package com.example.weathersphere.work
+package com.example.weathersphere.reciever
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -33,44 +33,38 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AlarmReceiver : BroadcastReceiver() {
-    companion object {
-        private const val TAG = "AlarmReceiver"
-    }
 
     override fun onReceive(context: Context, intent: Intent?) {
         val alarm = intent?.getSerializableExtra(Constants.WEATHER_ALARM) as WeatherAlarm
-        Log.d(TAG, "onReceive: ${alarm.latitude}")
 
         var messageFromApi = "The weather has cleared up and conditions are now good"
 
         CoroutineScope(Dispatchers.IO).launch {
-            try {
-                WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(context).weatherDao).deleteAlarm(alarm)
+            WeatherLocalDataSourceImpl(DatabaseProvider.getDatabase(context).weatherDao)
+                .deleteAlarm(alarm)
 
-                val mes = getAlertMessageFromApi(context, alarm)
+            val apiMessage = getAlertMessageFromApi(context, alarm)
 
-                if (mes != "null") {
-                    messageFromApi = mes
-                }
+            if (!apiMessage.isNullOrBlank()) {
+                messageFromApi = apiMessage
+            }
 
-                withContext(Dispatchers.Main) {
-                    when (alarm.kind) {
-                        Constants.NOTIFICATION -> createNotification(
-                            context,
-                            messageFromApi,
-                            alarm.zoneName
-                        )
+            withContext(Dispatchers.Main) {
+                when (alarm.kind) {
+                    Constants.NOTIFICATION -> createNotification(
+                        context,
+                        messageFromApi,
+                        alarm.zoneName
+                    )
 
-                        Constants.ALERT -> createAlertDialog(
+                    Constants.ALERT -> {
+                        createAlertDialog(
                             context,
                             messageFromApi,
                             alarm.zoneName
                         )
                     }
                 }
-            } catch (_: Exception) {
-            } finally {
-                cancel()
             }
         }
     }
@@ -99,7 +93,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val mediaPlayer = MediaPlayer.create(context, R.raw.alert)
 
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(context, R.style.Base_Theme_WeatherSphere)
         builder.setView(dialogView)
 
         val dialog = builder.create()
@@ -125,7 +119,6 @@ class AlarmReceiver : BroadcastReceiver() {
                         createNotification(context, message, zoneName)
                     }
                 }
-            } catch (_: Exception) {
             } finally {
                 cancel()
             }
@@ -146,19 +139,18 @@ class AlarmReceiver : BroadcastReceiver() {
     private suspend fun getAlertMessageFromApi(
         context: Context,
         weatherAlarm: WeatherAlarm
-    ): String {
-        var message = ""
+    ): String? {
+        var message: String? = null
         try {
             if (NetworkManager.checkConnection(context)) {
                 val weatherResponse = WeatherRemoteDataSourceImpl(RetrofitClient.apiService)
                     .getWeather(LatLng(weatherAlarm.latitude, weatherAlarm.longitude), "en")
 
                 if (weatherResponse.isSuccessful)
-                    message = weatherResponse.body()?.alerts?.get(0)?.description?: ""
+                    message = weatherResponse.body()?.alerts?.get(0)?.description ?: ""
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d(TAG, "getAlertMessageFromApi: ${e.message}")
         }
         return message
     }

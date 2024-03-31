@@ -6,10 +6,12 @@ import android.net.NetworkCapabilities
 
 object NetworkManager {
     fun checkConnection(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork
-        val capabilities = connectivityManager.getNetworkCapabilities(network)
-        return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(
-            NetworkCapabilities.TRANSPORT_CELLULAR))
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        return connectivityManager?.run {
+            val network = activeNetwork
+            val capabilities = getNetworkCapabilities(network)
+            capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(
+                NetworkCapabilities.TRANSPORT_CELLULAR))
+        } ?: false
     }
 }

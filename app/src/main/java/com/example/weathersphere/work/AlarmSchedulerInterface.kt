@@ -1,6 +1,5 @@
 package com.example.weathersphere.work
 
-import android.content.Context
 import com.example.weathersphere.model.data.WeatherAlarm
 
 interface AlarmSchedulerInterface {
